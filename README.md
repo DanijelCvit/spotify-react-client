@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+# Spotify web player
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+The goal of this project will be to build a web music player with React that uses the Spotify API. The user should be able to login to his spotify account and get his playlists. He should be able to play his songs, search for new music and update/modify his playlists.
 
-In the project directory, you can run:
+## Brand
 
-### `npm start`
+The brand I will be basing my design off of will be [Apple](https://www.apple.com/). This means the focus will be on minimalistic design and colors (white, gray, black).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Backlog
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Below is a list of my must haves and nice to haves for this project.
 
-### `npm test`
+The API I will be using is :
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [Spotify API](https://developer.spotify.com/documentation/web-api/)
 
-### `npm run build`
+The libraries / frameworks I will be using:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- [Reactjs](https://reactjs.org/)
+- [Material UI](https://material-ui.com/)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Must-Haves
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> these are necessary for basic usability
 
-### `npm run eject`
+- [ ] User: login to account, view profile
+- [ ] Player: start/resume playback, pause, skip to next/previous, set volume, skip to position, add items to queue
+- [ ] Playlist: view, create, update or delete playlists
+- [ ] Search: search for songs / albums and add them to a playlist
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Nice-to-Haves
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+> if time, add more features!
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [ ] User: Follow/unfollow playlist, user or artist
+- [ ] Player: get available devices, transfer playback
+- [ ] Tracks: get detailed info on tracks, save or remove Tracks
+- [ ] Tracks: get detailed info on tracks, save or remove Tracks
+- [ ] Shows:...
