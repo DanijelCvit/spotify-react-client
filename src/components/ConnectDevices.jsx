@@ -12,6 +12,8 @@ import List from "@mui/material/List";
 import useFetch from "../hooks/useFetch.js";
 import { AuthContext } from "../context/authContext.js";
 import Typography from "@mui/material/Typography";
+import { useEffect } from "react";
+import { BASE_API_URL } from "../constants.js";
 
 export default function ConnectDevices() {
   const token = useContext(AuthContext);
@@ -21,6 +23,8 @@ export default function ConnectDevices() {
     token
   );
 
+  const [selectedDevice, setSelectedDevice] = useState(null);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -29,10 +33,27 @@ export default function ConnectDevices() {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    const setActiveDevice = async () => {
+      try {
+        const res = await fetch(`${BASE_API_URL}/me/player`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ device_ids: [selectedDevice], play: true }),
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    setActiveDevice();
+  }, [selectedDevice]);
+
   const open = Boolean(anchorEl);
   const id = open ? "device-popover" : undefined;
-
-  const handleConnect = () => {};
 
   return (
     <Box sx={{ position: "absolute", right: "0px" }}>
@@ -57,18 +78,20 @@ export default function ConnectDevices() {
           horizontal: "center",
         }}
       >
-        {data?.devices > 0 && (
+        {data.devices?.length > 0 && (
           <List>
             {data.devices.map((device) => (
               <ListItemButton
-                onClick={handleConnect}
+                key={device.id}
+                onClick={() => setSelectedDevice(device.id)}
                 component="a"
                 href="#simple-list"
+                selected={selectedDevice === device.id}
               >
                 <ImageListItem>
                   <ComputerIcon sx={{ mr: 1 }} fontSize="large" />
                 </ImageListItem>
-                <ListItemText primary={"Device name"} secondary={"Location"} />
+                <ListItemText primary={device.name} secondary={device.type} />
               </ListItemButton>
             ))}
           </List>

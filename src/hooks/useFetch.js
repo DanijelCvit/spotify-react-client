@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-
-const BASE_API_URL = "https://api.spotify.com/v1";
+import { BASE_API_URL } from "../constants.js";
 
 const useFetch = (endpoint, token) => {
   const [data, setData] = useState({});
@@ -24,6 +23,7 @@ const useFetch = (endpoint, token) => {
         if (json.error) {
           setErrorMessage(json.error.message);
         } else {
+          console.log(json);
           setData(json);
         }
       } catch (error) {
