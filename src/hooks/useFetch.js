@@ -15,7 +15,7 @@ const useFetch = (endpoint, token) => {
         const res = await fetch(`${BASE_API_URL}${endpoint}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${""}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
