@@ -13,16 +13,13 @@ import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import ConnectedDevices from "./ConnectedDevices";
 
-const Widget = styled("div")(({ theme }) => ({
-  padding: 16,
-  borderRadius: 16,
-  width: 343,
+const Widget = styled(Stack)(({ theme }) => ({
   maxWidth: "100%",
   margin: "auto",
   position: "relative",
   zIndex: 1,
   backgroundColor:
-    theme.palette.mode === "dark" ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.4)",
+    theme.palette.mode === "dark" ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.6)",
   backdropFilter: "blur(40px)",
 }));
 
@@ -173,9 +170,20 @@ const WebPlayback = ({ token }) => {
   }, []);
 
   return (
-    <Box sx={{ width: "100%", overflow: "hidden" }}>
-      <Widget>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box sx={{ width: "100%" }}>
+      <Widget
+        direction={{ xs: "column", sm: "row" }}
+        sx={{ justifyContent: "space-between", px: { xs: 2 } }}
+        alignItems="center"
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: { xs: "100%", sm: "240px" },
+            mr: 2,
+          }}
+        >
           {current_track.album.images[0].url && (
             <CoverImage>
               <img
@@ -197,92 +205,98 @@ const WebPlayback = ({ token }) => {
             </Typography>
           </Box>
         </Box>
-        <Slider
-          aria-label="time-indicator"
-          size="small"
-          value={position}
-          min={0}
-          step={1}
-          max={duration}
-          onChange={handleSeek}
-          sx={{
-            color: theme.palette.mode === "dark" ? "#fff" : "rgba(0,0,0,0.87)",
-            height: 4,
-            "& .MuiSlider-thumb": {
-              width: 8,
-              height: 8,
-              transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
-              "&:before": {
-                boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
+        <Box sx={{ width: { xs: "100%" } }}>
+          <Slider
+            aria-label="time-indicator"
+            size="small"
+            value={position}
+            min={0}
+            step={1}
+            max={duration}
+            onChange={handleSeek}
+            sx={{
+              color:
+                theme.palette.mode === "dark" ? "#fff" : "rgba(0,0,0,0.87)",
+              height: 4,
+              "& .MuiSlider-thumb": {
+                width: 8,
+                height: 8,
+                transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
+                "&:before": {
+                  boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
+                },
+                "&:hover, &.Mui-focusVisible": {
+                  boxShadow: `0px 0px 0px 8px ${
+                    theme.palette.mode === "dark"
+                      ? "rgb(255 255 255 / 16%)"
+                      : "rgb(0 0 0 / 16%)"
+                  }`,
+                },
+                "&.Mui-active": {
+                  width: 20,
+                  height: 20,
+                },
               },
-              "&:hover, &.Mui-focusVisible": {
-                boxShadow: `0px 0px 0px 8px ${
-                  theme.palette.mode === "dark"
-                    ? "rgb(255 255 255 / 16%)"
-                    : "rgb(0 0 0 / 16%)"
-                }`,
+              "& .MuiSlider-rail": {
+                opacity: 0.28,
               },
-              "&.Mui-active": {
-                width: 20,
-                height: 20,
-              },
-            },
-            "& .MuiSlider-rail": {
-              opacity: 0.28,
-            },
-          }}
-        />
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            mt: -2,
-          }}
-        >
-          <TinyText>{formatDuration(position)}</TinyText>
-          <TinyText>{formatDuration(duration)}</TinyText>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-            mt: -1,
-          }}
-        >
-          <IconButton
-            onClick={() => player.previousTrack()}
-            aria-label="previous song"
+            }}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              mt: -2,
+            }}
           >
-            <FastRewindRounded fontSize="large" htmlColor={mainIconColor} />
-          </IconButton>
-          <IconButton
-            onClick={() => player.togglePlay()}
-            aria-label={is_paused ? "play" : "pause"}
+            <TinyText>{formatDuration(position)}</TinyText>
+            <TinyText>{formatDuration(duration)}</TinyText>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
+              mt: -1,
+            }}
           >
-            {is_paused ? (
-              <PlayArrowRounded
-                sx={{ fontSize: "3rem" }}
-                htmlColor={mainIconColor}
-              />
-            ) : (
-              <PauseRounded
-                sx={{ fontSize: "3rem" }}
-                htmlColor={mainIconColor}
-              />
-            )}
-          </IconButton>
-          <IconButton onClick={() => player.nextTrack()} aria-label="next song">
-            <FastForwardRounded fontSize="large" htmlColor={mainIconColor} />
-          </IconButton>
-          <ConnectedDevices />
+            <IconButton
+              onClick={() => player.previousTrack()}
+              aria-label="previous song"
+            >
+              <FastRewindRounded fontSize="large" htmlColor={mainIconColor} />
+            </IconButton>
+            <IconButton
+              onClick={() => player.togglePlay()}
+              aria-label={is_paused ? "play" : "pause"}
+            >
+              {is_paused ? (
+                <PlayArrowRounded
+                  sx={{ fontSize: "3rem" }}
+                  htmlColor={mainIconColor}
+                />
+              ) : (
+                <PauseRounded
+                  sx={{ fontSize: "3rem" }}
+                  htmlColor={mainIconColor}
+                />
+              )}
+            </IconButton>
+            <IconButton
+              onClick={() => player.nextTrack()}
+              aria-label="next song"
+            >
+              <FastForwardRounded fontSize="large" htmlColor={mainIconColor} />
+            </IconButton>
+            <ConnectedDevices />
+          </Box>
         </Box>
         <Stack
-          spacing={2}
+          spacing={1}
           direction="row"
-          sx={{ mb: 1, px: 1 }}
+          sx={{ mb: 1, px: 1, width: { xs: "100%", sm: "240px" } }}
           alignItems="center"
         >
           <VolumeDownRounded htmlColor={lightIconColor} />

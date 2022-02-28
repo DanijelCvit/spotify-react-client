@@ -14,25 +14,6 @@ import { AuthContext } from "../context/authContext.js";
 import Typography from "@mui/material/Typography";
 import { useEffect } from "react";
 import { BASE_API_URL } from "../constants.js";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-const theme = createTheme({
-  components: {
-    // Name of the component
-    MuiPaper: {
-      styleOverrides: {
-        // Name of the slot
-        root: {
-          // Some CSS
-          borderRadius: 20,
-          zIndex: 1,
-          backgroundColor: "rgba(255,255,255,0.4)",
-          backdropFilter: "blur(40px)",
-        },
-      },
-    },
-  },
-});
 
 export default function ConnectedDevices() {
   const token = useContext(AuthContext);
@@ -79,50 +60,48 @@ export default function ConnectedDevices() {
   const id = open ? "device-popover" : undefined;
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ position: "absolute", right: "0px" }}>
-        <IconButton
-          onClick={handleClick}
-          aria-describedby={id}
-          aria-label="connect device"
-        >
-          <DevicesIcon />
-        </IconButton>
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-        >
-          {data.devices?.length > 0 && (
-            <List>
-              {data.devices.map((device) => (
-                <ListItemButton
-                  key={device.id}
-                  onClick={() => setSelectedDevice(device.id)}
-                  component="a"
-                  href="#simple-list"
-                  selected={selectedDevice === device.id}
-                >
-                  <ImageListItem>
-                    <ComputerIcon sx={{ mr: 1 }} fontSize="large" />
-                  </ImageListItem>
-                  <ListItemText primary={device.name} secondary={device.type} />
-                </ListItemButton>
-              ))}
-            </List>
-          )}
-          {errorMessage && <Typography>{errorMessage}</Typography>}
-        </Popover>
-      </Box>
-    </ThemeProvider>
+    <Box sx={{ position: "absolute", right: "0px" }}>
+      <IconButton
+        onClick={handleClick}
+        aria-describedby={id}
+        aria-label="connect device"
+      >
+        <DevicesIcon />
+      </IconButton>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+      >
+        {data.devices?.length > 0 && (
+          <List>
+            {data.devices.map((device) => (
+              <ListItemButton
+                key={device.id}
+                onClick={() => setSelectedDevice(device.id)}
+                component="a"
+                href="#simple-list"
+                selected={selectedDevice === device.id}
+              >
+                <ImageListItem>
+                  <ComputerIcon sx={{ mr: 1 }} fontSize="large" />
+                </ImageListItem>
+                <ListItemText primary={device.name} secondary={device.type} />
+              </ListItemButton>
+            ))}
+          </List>
+        )}
+        {errorMessage && <Typography>{errorMessage}</Typography>}
+      </Popover>
+    </Box>
   );
 }

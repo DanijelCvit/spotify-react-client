@@ -6,7 +6,7 @@ import {
   List,
 } from "@mui/material";
 
-const TrackSearchResult = ({
+const TrackListItem = ({
   track: { uri, albumUrl, artist, title },
   chooseTrack,
 }) => {
@@ -32,4 +32,4 @@ const TrackSearchResult = ({
   );
 };
 
-export default TrackSearchResult;
+export default TrackListItem;

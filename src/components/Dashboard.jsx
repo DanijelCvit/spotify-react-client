@@ -1,9 +1,29 @@
 import React from "react";
 import { useState } from "react";
 import { Container, List, Box } from "@mui/material";
-import TrackSearchResult from "./TrackSearchResult.jsx";
+import TrackListItem from "./TrackListItem.jsx";
 import WebPlayback from "./WebPlayback";
 import { styled } from "@mui/material/styles";
+import AppBar from "./AppBar";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  components: {
+    // Name of the component
+    MuiPaper: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          borderRadius: 10,
+          zIndex: 1,
+          backgroundColor: "rgba(255,255,255,0.4)",
+          backdropFilter: "blur(40px)",
+        },
+      },
+    },
+  },
+});
 
 const WallPaper = styled("div")({
   position: "absolute",
@@ -38,24 +58,40 @@ const WallPaper = styled("div")({
 });
 
 const Dashboard = ({ token }) => {
-  const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
   return (
+    // <ThemeProvider theme={theme}>
     <Container
-      sx={{ display: "flex", flexDirection: "column", height: "100vh" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+      }}
     >
-      <List sx={{ flexGrow: 1, overflow: "auto" }}>
+      {/* <div
+        style={{
+          position: "absolute",
+          width: "1px",
+          backgroundColor: "red",
+          height: "100vh",
+          zIndex: 4,
+          left: "50%",
+        }}
+      ></div> */}
+      <AppBar setSearchResults={setSearchResults} />
+      <List sx={{ flexGrow: 1, overflow: "auto", backgroundColor: "white" }}>
         {searchResults.length > 0 &&
           searchResults.map((track) => (
-            <TrackSearchResult key={track.uri} track={track} chooseTrack={""} />
+            <TrackListItem key={track.uri} track={track} chooseTrack={""} />
           ))}
       </List>
-      <Box sx={{ mt: 2 }}>
+      <Box>
         <WebPlayback token={token} />
       </Box>
-      <WallPaper />
+      <WallPaper sx={{ zIndex: -1 }} />
     </Container>
+    // </ThemeProvider>
   );
 };
 
