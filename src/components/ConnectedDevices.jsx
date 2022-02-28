@@ -15,7 +15,22 @@ import Typography from "@mui/material/Typography";
 import { useEffect } from "react";
 import { BASE_API_URL } from "../constants.js";
 
-export default function ConnectDevices() {
+// const theme = createTheme({
+//   components: {
+//     // Name of the component
+//     MuiButton: {
+//       styleOverrides: {
+//         // Name of the slot
+//         root: {
+//           // Some CSS
+//           fontSize: "1rem",
+//         },
+//       },
+//     },
+//   },
+// });
+
+export default function ConnectedDevices() {
   const token = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const { data, isLoading, errorMessage } = useFetch(
@@ -34,6 +49,10 @@ export default function ConnectDevices() {
   };
 
   useEffect(() => {
+    if (!selectedDevice) {
+      return;
+    }
+
     const setActiveDevice = async () => {
       try {
         const res = await fetch(`${BASE_API_URL}/me/player`, {
@@ -65,6 +84,16 @@ export default function ConnectDevices() {
         <DevicesIcon />
       </IconButton>
       <Popover
+        sx={{
+          "&.MuiPaper-root": {
+            "&.MuiPopover-paper": {
+              borderRadius: 20,
+              zIndex: 1,
+              backgroundColor: "rgba(255,255,255,0.4)",
+              backdropFilter: "blur(40px)",
+            },
+          },
+        }}
         id={id}
         open={open}
         anchorEl={anchorEl}
