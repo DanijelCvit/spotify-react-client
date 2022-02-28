@@ -20,26 +20,6 @@ const Dashboard = ({ token }) => {
     <Container
       sx={{ display: "flex", flexDirection: "column", height: "100vh" }}
     >
-      <Paper
-        component="form"
-        sx={{
-          mt: 1,
-          display: "flex",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <InputBase
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          sx={{ ml: 1, flex: 1 }}
-          placeholder="Search..."
-          inputProps={{ "aria-label": "search..." }}
-        />
-        <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-      </Paper>
       <List sx={{ flexGrow: 1, overflow: "auto" }}>
         {searchResults.length > 0 &&
           searchResults.map((track) => (

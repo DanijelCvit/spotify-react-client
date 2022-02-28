@@ -11,6 +11,7 @@ import FastForwardRounded from "@mui/icons-material/FastForwardRounded";
 import FastRewindRounded from "@mui/icons-material/FastRewindRounded";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
+import ConnectDevices from "./ConnectDevices";
 
 const WallPaper = styled("div")({
   position: "absolute",
@@ -279,6 +280,7 @@ const WebPlayback = ({ token }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            position: "relative",
             mt: -1,
           }}
         >
@@ -307,6 +309,7 @@ const WebPlayback = ({ token }) => {
           <IconButton onClick={() => player.nextTrack()} aria-label="next song">
             <FastForwardRounded fontSize="large" htmlColor={mainIconColor} />
           </IconButton>
+          <ConnectDevices />
         </Box>
         <Stack
           spacing={2}
