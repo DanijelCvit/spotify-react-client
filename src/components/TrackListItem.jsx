@@ -6,28 +6,24 @@ import {
   List,
 } from "@mui/material";
 
-const TrackListItem = ({
-  track: { uri, albumUrl, artist, title },
-  chooseTrack,
-}) => {
-  const handlePlay = () => {
-    chooseTrack(uri);
+const TrackListItem = ({ track, selectTrack }) => {
+  const handleSelectTrack = () => {
+    selectTrack(track);
   };
-
   return (
     <ListItemButton
-      onClick={handlePlay}
-      key={uri}
+      onClick={handleSelectTrack}
+      key={track.uri}
       component="a"
       href="#simple-list"
     >
       <ImageListItem sx={{ width: "50px", height: "50px", mr: 1 }}>
         <img
-          src={`${albumUrl.url}?w=${albumUrl.width}&h=${albumUrl.height}&fit=crop&auto=format`}
+          src={`${track.album.images[0].url}?w=${track.album.images[0].width}&h=${track.album.images[0].height}&fit=crop&auto=format`}
           loading="lazy"
         />
       </ImageListItem>
-      <ListItemText primary={title} secondary={artist} />
+      <ListItemText primary={track.name} secondary={track.artists[0].name} />
     </ListItemButton>
   );
 };

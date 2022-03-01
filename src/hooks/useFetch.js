@@ -2,12 +2,16 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { BASE_API_URL } from "../constants.js";
 
-const useFetch = (endpoint, token) => {
+const useFetch = (endpoint, token, dependency = null) => {
   const [data, setData] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (dependency === "") {
+      return setData({});
+    }
+
     const fetchData = async () => {
       try {
         setIsLoading(true);
@@ -35,7 +39,7 @@ const useFetch = (endpoint, token) => {
     };
 
     fetchData();
-  }, [endpoint, token]);
+  }, [endpoint, token, dependency]);
 
   return { data, errorMessage, isLoading };
 };

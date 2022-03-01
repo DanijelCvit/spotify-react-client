@@ -12,18 +12,17 @@ import List from "@mui/material/List";
 import useFetch from "../hooks/useFetch.js";
 import { AuthContext } from "../context/authContext.js";
 import Typography from "@mui/material/Typography";
-import { useEffect } from "react";
-import { BASE_API_URL } from "../constants.js";
 
-export default function ConnectedDevices() {
+export default function ConnectedDevices({
+  selectedDevice,
+  setSelectedDevice,
+}) {
   const token = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const { data, isLoading, errorMessage } = useFetch(
     "/me/player/devices",
     token
   );
-
-  const [selectedDevice, setSelectedDevice] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,29 +31,6 @@ export default function ConnectedDevices() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(() => {
-    if (!selectedDevice) {
-      return;
-    }
-
-    const setActiveDevice = async () => {
-      try {
-        const res = await fetch(`${BASE_API_URL}/me/player`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ device_ids: [selectedDevice], play: true }),
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    setActiveDevice();
-  }, [selectedDevice]);
 
   const open = Boolean(anchorEl);
   const id = open ? "device-popover" : undefined;

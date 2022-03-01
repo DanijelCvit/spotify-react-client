@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,7 +14,6 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import WebPlayback from "./WebPlayback";
 import TrackListItem from "./TrackListItem.jsx";
 import { styled } from "@mui/material/styles";
@@ -22,6 +21,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import useFetch from "../hooks/useFetch.js";
+import { BASE_API_URL } from "../constants.js";
 
 const drawerWidth = 240;
 const theme = createTheme({
@@ -115,16 +116,51 @@ const WallPaper = styled("div")({
 function Dashboard(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
   const [search, setSearch] = useState("");
+  const [currentTrack, setCurrentTrack] = useState({
+    name: "",
+    album: {
+      images: [{ url: "" }],
+    },
+    artists: [{ name: "" }],
+    duration_ms: 0,
+  });
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
 
+  const selectTrack = async (track) => {
+    console.log(track.uri);
+    try {
+      const res = await fetch(`${BASE_API_URL}/me/player/play`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props.token}`,
+        },
+        body: JSON.stringify({
+          uris: [track.uri],
+          offset: {
+            position: 0,
+          },
+          position_ms: 0,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const { data, errorMessage, isLoading } = useFetch(
+    `/search?q=${search}&type=track`,
+    props.token,
+    search
+  );
 
   const drawer = (
     <div>
@@ -261,25 +297,32 @@ function Dashboard(props) {
               backdropFilter: "blur(40px)",
               boxShadow: "none",
               color: "black",
+              overflow: "auto",
             }}
           >
             <List>
-              {searchResults.length > 0 &&
-                searchResults.map((track) => (
+              {data &&
+                data.tracks?.items.length > 0 &&
+                data.tracks.items.map((track) => (
                   <TrackListItem
                     key={track.uri}
                     track={track}
-                    chooseTrack={""}
+                    selectTrack={selectTrack}
                   />
                 ))}
             </List>
           </Box>
           <Box>
-            <WebPlayback token={props.token} />
+            <WebPlayback
+              token={props.token}
+              setCurrentTrack={setCurrentTrack}
+              current_track={currentTrack}
+            />
           </Box>
         </Box>
-        <WallPaper sx={{ zIndex: -1 }} />
       </Box>
+
+      <WallPaper sx={{ zIndex: -1 }} />
     </ThemeProvider>
   );
 }

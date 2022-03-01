@@ -12,6 +12,7 @@ import FastRewindRounded from "@mui/icons-material/FastRewindRounded";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import ConnectedDevices from "./ConnectedDevices";
+import { BASE_API_URL } from "../constants.js";
 
 const Widget = styled(Stack)(({ theme }) => ({
   maxWidth: "100%",
@@ -43,16 +44,7 @@ const TinyText = styled(Typography)({
   letterSpacing: 0.2,
 });
 
-const track = {
-  name: "",
-  album: {
-    images: [{ url: "" }],
-  },
-  artists: [{ name: "" }],
-  duration_ms: 0,
-};
-
-const WebPlayback = ({ token }) => {
+const WebPlayback = ({ token, setCurrentTrack, current_track }) => {
   const theme = useTheme();
 
   function formatDuration(value) {
@@ -67,9 +59,9 @@ const WebPlayback = ({ token }) => {
   const [player, setPlayer] = useState(undefined);
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
-  const [current_track, setTrack] = useState(track);
   const [volume, setVolume] = useState(30);
   const [position, setPosition] = useState(0);
+  const [selectedDevice, setSelectedDevice] = useState(null);
 
   const duration = Math.floor(current_track.duration_ms / 1000); // seconds
 
@@ -86,6 +78,29 @@ const WebPlayback = ({ token }) => {
     player.seek(newValue * 1000);
     setPosition(newValue);
   };
+
+  useEffect(() => {
+    if (!selectedDevice) {
+      return;
+    }
+
+    const setActiveDevice = async () => {
+      try {
+        const res = await fetch(`${BASE_API_URL}/me/player`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ device_ids: [selectedDevice], play: true }),
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    setActiveDevice();
+  }, [selectedDevice]);
 
   // Update the slider time indicator position every second
 
@@ -128,6 +143,7 @@ const WebPlayback = ({ token }) => {
 
       player.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
+        setSelectedDevice(device_id);
       });
 
       player.addListener("not_ready", ({ device_id }) => {
@@ -138,8 +154,8 @@ const WebPlayback = ({ token }) => {
         if (!state) {
           return;
         }
-
-        setTrack(state.track_window.current_track);
+        console.log(state);
+        setCurrentTrack(state.track_window.current_track);
         setPaused(state.paused);
 
         player.getCurrentState().then((state) => {
@@ -184,7 +200,7 @@ const WebPlayback = ({ token }) => {
           textAlign: { xs: "center", md: "left" },
           alignItems: "center",
           width: { xs: "100%", sm: "240px" },
-          mr: 2,
+          mr: { md: 2 },
           py: 1,
         }}
       >
@@ -286,7 +302,10 @@ const WebPlayback = ({ token }) => {
           <IconButton onClick={() => player.nextTrack()} aria-label="next song">
             <FastForwardRounded fontSize="large" htmlColor={mainIconColor} />
           </IconButton>
-          <ConnectedDevices />
+          <ConnectedDevices
+            selectedDevice={selectedDevice}
+            setSelectedDevice={setSelectedDevice}
+          />
         </Box>
       </Box>
       <Stack
