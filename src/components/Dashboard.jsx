@@ -21,8 +21,24 @@ import { styled } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const drawerWidth = 240;
+const theme = createTheme({
+  components: {
+    // Name of the component
+    MuiPaper: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          backgroundColor: "rgba(255,255,255,0.1)",
+          backdropFilter: "blur(40px)",
+        },
+      },
+    },
+  },
+});
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -142,119 +158,129 @@ function Dashboard(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-          backgroundColor: "rgba(255,255,255,0.6)",
-          backdropFilter: "blur(40px)",
-          boxShadow: "none",
-          color: "black",
-        }}
-      >
-        <Toolbar sx={{ justifyContent: "center" }}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              value={search}
-              onChange={handleSearch}
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
           sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              backgroundColor: "rgba(255,255,255,0.8)",
-              backdropFilter: "blur(40px)",
-              boxShadow: "none",
-              color: "black",
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box
-        component="main"
-        sx={{
-          display: "flex",
-          flexGrow: 1,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          flexDirection: "column",
-          height: "100vh",
-        }}
-      >
-        <Toolbar />
-
-        <Box
-          sx={{
-            flexGrow: 1,
-            backgroundColor: "rgba(255,255,255,0.7)",
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            ml: { sm: `${drawerWidth}px` },
+            backgroundColor: "rgba(255,255,255,0.6)",
             backdropFilter: "blur(40px)",
             boxShadow: "none",
             color: "black",
           }}
         >
-          <List>
-            {searchResults.length > 0 &&
-              searchResults.map((track) => (
-                <TrackListItem key={track.uri} track={track} chooseTrack={""} />
-              ))}
-          </List>
+          <Toolbar sx={{ justifyContent: "center" }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                value={search}
+                onChange={handleSearch}
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
+          </Toolbar>
+        </AppBar>
+        <Box
+          component="nav"
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          aria-label="mailbox folders"
+        >
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: "block", sm: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+                backgroundColor: "rgba(255,255,255,0.8)",
+                backdropFilter: "blur(40px)",
+                boxShadow: "none",
+                color: "black",
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+                backgroundColor: "rgba(255,255,255,0.8)",
+                backdropFilter: "blur(40px)",
+                boxShadow: "none",
+                color: "black",
+              },
+            }}
+            open
+          >
+            {drawer}
+          </Drawer>
         </Box>
-        <Box>
-          <WebPlayback token={props.token} />
+        <Box
+          component="main"
+          sx={{
+            display: "flex",
+            flexGrow: 1,
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            flexDirection: "column",
+            height: "100vh",
+          }}
+        >
+          <Toolbar />
+
+          <Box
+            sx={{
+              flexGrow: 1,
+              backgroundColor: "rgba(255,255,255,0.7)",
+              backdropFilter: "blur(40px)",
+              boxShadow: "none",
+              color: "black",
+            }}
+          >
+            <List>
+              {searchResults.length > 0 &&
+                searchResults.map((track) => (
+                  <TrackListItem
+                    key={track.uri}
+                    track={track}
+                    chooseTrack={""}
+                  />
+                ))}
+            </List>
+          </Box>
+          <Box>
+            <WebPlayback token={props.token} />
+          </Box>
         </Box>
+        <WallPaper sx={{ zIndex: -1 }} />
       </Box>
-      <WallPaper sx={{ zIndex: -1 }} />
-    </Box>
+    </ThemeProvider>
   );
 }
 
