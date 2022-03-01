@@ -10,6 +10,7 @@ const TrackListItem = ({ track, selectTrack }) => {
   const handleSelectTrack = () => {
     selectTrack(track);
   };
+
   return (
     <ListItemButton
       onClick={handleSelectTrack}

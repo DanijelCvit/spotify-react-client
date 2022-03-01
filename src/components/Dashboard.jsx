@@ -131,7 +131,6 @@ function Dashboard(props) {
   };
 
   const selectTrack = async (track) => {
-    console.log(track.uri);
     try {
       const res = await fetch(`${BASE_API_URL}/me/player/play`, {
         method: "PUT",
@@ -147,6 +146,12 @@ function Dashboard(props) {
           position_ms: 0,
         }),
       });
+
+      const json = await res.json();
+
+      if (json.error) {
+        console.log(json.error.message);
+      }
     } catch (error) {
       console.log(error);
     }

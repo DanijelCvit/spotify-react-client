@@ -47,6 +47,7 @@ const TinyText = styled(Typography)({
 const WebPlayback = ({ token, setCurrentTrack, current_track }) => {
   const theme = useTheme();
 
+  // Format time from ms to min:sec
   function formatDuration(value) {
     const minute = Math.floor(value / 60);
     const secondLeft = value - minute * 60;
@@ -74,10 +75,26 @@ const WebPlayback = ({ token, setCurrentTrack, current_track }) => {
     setVolume(newValue);
   };
 
+  // Update position of the current track
   const handleSeek = (_, newValue) => {
     player.seek(newValue * 1000);
-    setPosition(newValue);
   };
+
+  useEffect(() => {
+    if (!is_active || is_paused) {
+      return;
+    }
+    const timeout = setTimeout(() => {
+      setPosition(position + 1);
+    }, 1000);
+
+    console.log("starting timeout", timeout);
+
+    return () => {
+      console.log("stopping timeout", timeout);
+      clearTimeout(timeout);
+    };
+  }, [is_paused, is_active, position]);
 
   useEffect(() => {
     if (!selectedDevice) {
@@ -101,26 +118,6 @@ const WebPlayback = ({ token, setCurrentTrack, current_track }) => {
 
     setActiveDevice();
   }, [selectedDevice]);
-
-  // Update the slider time indicator position every second
-
-  useEffect(() => {
-    setPosition(0);
-  }, [JSON.stringify(current_track)]);
-
-  useEffect(() => {
-    if (!is_active || is_paused) {
-      return;
-    }
-    const interval = setInterval(() => {
-      if (position >= duration) {
-        clearInterval(interval);
-      }
-      setPosition(position + 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [position, is_paused, is_active]);
 
   // Add the SDK to the DOM and initialize the player
   useEffect(() => {
@@ -154,8 +151,9 @@ const WebPlayback = ({ token, setCurrentTrack, current_track }) => {
         if (!state) {
           return;
         }
-        console.log(state);
+
         setCurrentTrack(state.track_window.current_track);
+        setPosition(parseInt(state.position / 1000));
         setPaused(state.paused);
 
         player.getCurrentState().then((state) => {
@@ -212,7 +210,7 @@ const WebPlayback = ({ token, setCurrentTrack, current_track }) => {
             />
           </CoverImage>
         )}
-        <Box sx={{ ml: 1.5, minWidth: 0 }}>
+        <Box sx={{ ml: { md: 1.5 }, minWidth: 0 }}>
           <Typography variant="caption" color="text.secondary" fontWeight={500}>
             {current_track.artists[0].name}
           </Typography>
