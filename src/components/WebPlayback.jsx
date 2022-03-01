@@ -171,7 +171,7 @@ const WebPlayback = ({ token }) => {
 
   return (
     <Widget
-      direction={{ xs: "column", sm: "row" }}
+      direction={{ xs: "column", md: "row" }}
       sx={{
         justifyContent: "space-between",
         px: { xs: 2 },
@@ -180,14 +180,16 @@ const WebPlayback = ({ token }) => {
     >
       <Box
         sx={{
-          display: "flex",
+          display: { md: "flex" },
+          textAlign: { xs: "center", md: "left" },
           alignItems: "center",
           width: { xs: "100%", sm: "240px" },
           mr: 2,
+          py: 1,
         }}
       >
         {current_track.album.images[0].url && (
-          <CoverImage>
+          <CoverImage sx={{ margin: "auto" }}>
             <img
               alt="can't win - Chilling Sunday"
               src={current_track.album.images[0].url}
@@ -203,7 +205,7 @@ const WebPlayback = ({ token }) => {
           </Typography>
         </Box>
       </Box>
-      <Box sx={{ width: { xs: "100%" } }}>
+      <Box sx={{ width: { xs: "100%" }, maxWidth: { md: "500px" } }}>
         <Slider
           aria-label="time-indicator"
           size="small"
