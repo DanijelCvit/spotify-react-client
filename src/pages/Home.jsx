@@ -7,7 +7,17 @@ import Dashboard from "../components/Dashboard";
 const Home = () => {
   const token = useContext(AuthContext);
 
-  return <>{token === "" ? <Login /> : <Dashboard token={token} />}</>;
+  return (
+    <>
+      {token === "" ? (
+        <Login />
+      ) : (
+        <>
+          <Dashboard token={token} />
+        </>
+      )}
+    </>
+  );
 };
 
 export default Home;

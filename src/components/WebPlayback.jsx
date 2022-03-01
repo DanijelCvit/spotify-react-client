@@ -170,163 +170,155 @@ const WebPlayback = ({ token }) => {
   }, []);
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Widget
-        direction={{ xs: "column", sm: "row" }}
-        sx={{ justifyContent: "space-between", px: { xs: 2 } }}
-        alignItems="center"
+    <Widget
+      direction={{ xs: "column", sm: "row" }}
+      sx={{
+        justifyContent: "space-between",
+        px: { xs: 2 },
+      }}
+      alignItems="center"
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          width: { xs: "100%", sm: "240px" },
+          mr: 2,
+        }}
       >
+        {current_track.album.images[0].url && (
+          <CoverImage>
+            <img
+              alt="can't win - Chilling Sunday"
+              src={current_track.album.images[0].url}
+            />
+          </CoverImage>
+        )}
+        <Box sx={{ ml: 1.5, minWidth: 0 }}>
+          <Typography variant="caption" color="text.secondary" fontWeight={500}>
+            {current_track.artists[0].name}
+          </Typography>
+          <Typography noWrap>
+            <b>{current_track.name}</b>
+          </Typography>
+        </Box>
+      </Box>
+      <Box sx={{ width: { xs: "100%" } }}>
+        <Slider
+          aria-label="time-indicator"
+          size="small"
+          value={position}
+          min={0}
+          step={1}
+          max={duration}
+          onChange={handleSeek}
+          sx={{
+            color: theme.palette.mode === "dark" ? "#fff" : "rgba(0,0,0,0.87)",
+            height: 4,
+            "& .MuiSlider-thumb": {
+              width: 8,
+              height: 8,
+              transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
+              "&:before": {
+                boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
+              },
+              "&:hover, &.Mui-focusVisible": {
+                boxShadow: `0px 0px 0px 8px ${
+                  theme.palette.mode === "dark"
+                    ? "rgb(255 255 255 / 16%)"
+                    : "rgb(0 0 0 / 16%)"
+                }`,
+              },
+              "&.Mui-active": {
+                width: 20,
+                height: 20,
+              },
+            },
+            "& .MuiSlider-rail": {
+              opacity: 0.28,
+            },
+          }}
+        />
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            width: { xs: "100%", sm: "240px" },
-            mr: 2,
+            justifyContent: "space-between",
+            mt: -2,
           }}
         >
-          {current_track.album.images[0].url && (
-            <CoverImage>
-              <img
-                alt="can't win - Chilling Sunday"
-                src={current_track.album.images[0].url}
-              />
-            </CoverImage>
-          )}
-          <Box sx={{ ml: 1.5, minWidth: 0 }}>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              fontWeight={500}
-            >
-              {current_track.artists[0].name}
-            </Typography>
-            <Typography noWrap>
-              <b>{current_track.name}</b>
-            </Typography>
-          </Box>
+          <TinyText>{formatDuration(position)}</TinyText>
+          <TinyText>{formatDuration(duration)}</TinyText>
         </Box>
-        <Box sx={{ width: { xs: "100%" } }}>
-          <Slider
-            aria-label="time-indicator"
-            size="small"
-            value={position}
-            min={0}
-            step={1}
-            max={duration}
-            onChange={handleSeek}
-            sx={{
-              color:
-                theme.palette.mode === "dark" ? "#fff" : "rgba(0,0,0,0.87)",
-              height: 4,
-              "& .MuiSlider-thumb": {
-                width: 8,
-                height: 8,
-                transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
-                "&:before": {
-                  boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
-                },
-                "&:hover, &.Mui-focusVisible": {
-                  boxShadow: `0px 0px 0px 8px ${
-                    theme.palette.mode === "dark"
-                      ? "rgb(255 255 255 / 16%)"
-                      : "rgb(0 0 0 / 16%)"
-                  }`,
-                },
-                "&.Mui-active": {
-                  width: 20,
-                  height: 20,
-                },
-              },
-              "& .MuiSlider-rail": {
-                opacity: 0.28,
-              },
-            }}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              mt: -2,
-            }}
-          >
-            <TinyText>{formatDuration(position)}</TinyText>
-            <TinyText>{formatDuration(duration)}</TinyText>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "relative",
-              mt: -1,
-            }}
-          >
-            <IconButton
-              onClick={() => player.previousTrack()}
-              aria-label="previous song"
-            >
-              <FastRewindRounded fontSize="large" htmlColor={mainIconColor} />
-            </IconButton>
-            <IconButton
-              onClick={() => player.togglePlay()}
-              aria-label={is_paused ? "play" : "pause"}
-            >
-              {is_paused ? (
-                <PlayArrowRounded
-                  sx={{ fontSize: "3rem" }}
-                  htmlColor={mainIconColor}
-                />
-              ) : (
-                <PauseRounded
-                  sx={{ fontSize: "3rem" }}
-                  htmlColor={mainIconColor}
-                />
-              )}
-            </IconButton>
-            <IconButton
-              onClick={() => player.nextTrack()}
-              aria-label="next song"
-            >
-              <FastForwardRounded fontSize="large" htmlColor={mainIconColor} />
-            </IconButton>
-            <ConnectedDevices />
-          </Box>
-        </Box>
-        <Stack
-          spacing={1}
-          direction="row"
-          sx={{ mb: 1, px: 1, width: { xs: "100%", sm: "240px" } }}
-          alignItems="center"
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            mt: -1,
+          }}
         >
-          <VolumeDownRounded htmlColor={lightIconColor} />
-          <Slider
-            aria-label="Volume"
-            value={volume}
-            onChange={handleVolume}
-            sx={{
-              color:
-                theme.palette.mode === "dark" ? "#fff" : "rgba(0,0,0,0.87)",
-              "& .MuiSlider-track": {
-                border: "none",
+          <IconButton
+            onClick={() => player.previousTrack()}
+            aria-label="previous song"
+          >
+            <FastRewindRounded fontSize="large" htmlColor={mainIconColor} />
+          </IconButton>
+          <IconButton
+            onClick={() => player.togglePlay()}
+            aria-label={is_paused ? "play" : "pause"}
+          >
+            {is_paused ? (
+              <PlayArrowRounded
+                sx={{ fontSize: "3rem" }}
+                htmlColor={mainIconColor}
+              />
+            ) : (
+              <PauseRounded
+                sx={{ fontSize: "3rem" }}
+                htmlColor={mainIconColor}
+              />
+            )}
+          </IconButton>
+          <IconButton onClick={() => player.nextTrack()} aria-label="next song">
+            <FastForwardRounded fontSize="large" htmlColor={mainIconColor} />
+          </IconButton>
+          <ConnectedDevices />
+        </Box>
+      </Box>
+      <Stack
+        spacing={1}
+        direction="row"
+        sx={{ mb: 1, px: 1, width: { xs: "100%", sm: "240px" } }}
+        alignItems="center"
+      >
+        <VolumeDownRounded htmlColor={lightIconColor} />
+        <Slider
+          aria-label="Volume"
+          value={volume}
+          onChange={handleVolume}
+          sx={{
+            color: theme.palette.mode === "dark" ? "#fff" : "rgba(0,0,0,0.87)",
+            "& .MuiSlider-track": {
+              border: "none",
+            },
+            "& .MuiSlider-thumb": {
+              width: 24,
+              height: 24,
+              backgroundColor: "#fff",
+              "&:before": {
+                boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
               },
-              "& .MuiSlider-thumb": {
-                width: 24,
-                height: 24,
-                backgroundColor: "#fff",
-                "&:before": {
-                  boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
-                },
-                "&:hover, &.Mui-focusVisible, &.Mui-active": {
-                  boxShadow: "none",
-                },
+              "&:hover, &.Mui-focusVisible, &.Mui-active": {
+                boxShadow: "none",
               },
-            }}
-          />
-          <VolumeUpRounded htmlColor={lightIconColor} />
-        </Stack>
-      </Widget>
-    </Box>
+            },
+          }}
+        />
+        <VolumeUpRounded htmlColor={lightIconColor} />
+      </Stack>
+    </Widget>
   );
 };
 
