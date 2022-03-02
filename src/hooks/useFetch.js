@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { BASE_API_URL } from "../constants.js";
 
-const useFetch = (endpoint, token, query = "") => {
-  const [data, setData] = useState({});
+const useFetch = (resource, endpoint, token, query = "") => {
+  const [data, setData] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -11,9 +11,14 @@ const useFetch = (endpoint, token, query = "") => {
   const offset = +params.get("offset");
   const search = params.get("q");
 
+  // If search string is different, clear array before appending next result page
+  useEffect(() => {
+    setData([]);
+  }, [search]);
+
   useEffect(() => {
     if (endpoint === "/search" && !search) {
-      return setData({});
+      return setData([]);
     }
 
     const fetchData = async () => {
@@ -27,21 +32,17 @@ const useFetch = (endpoint, token, query = "") => {
         });
 
         const json = await res.json();
+        console.log(json);
 
         if (json.error) {
           setErrorMessage(json.error.message);
         } else {
-          if (endpoint === "/search" && offset > 0) {
-            setData((prevData) => {
-              return {
-                tracks: {
-                  items: [...prevData.tracks.items, ...json.tracks.items],
-                },
-              };
-            });
-          } else {
-            setData(json);
-          }
+          setData((prevData) => {
+            if (json[resource].items) {
+              return [...prevData, ...json[resource].items];
+            }
+            return [...prevData, ...json[resource]];
+          });
         }
       } catch (error) {
         setErrorMessage(error);
@@ -52,8 +53,9 @@ const useFetch = (endpoint, token, query = "") => {
     };
 
     fetchData();
-  }, [endpoint, token, query]);
+  }, [endpoint, token, query, resource]);
 
+  console.log(data);
   return { data, errorMessage, isLoading };
 };
 

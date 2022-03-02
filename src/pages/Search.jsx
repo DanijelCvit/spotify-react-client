@@ -2,7 +2,13 @@ import React, { useEffect, useRef } from "react";
 import List from "@mui/material/List";
 import TrackListItem from "../components/TrackListItem";
 
-const Search = ({ data, selectTrack, search, searchPage, setSearchPage }) => {
+const Search = ({
+  data: tracks,
+  selectTrack,
+  search,
+  searchPage,
+  setSearchPage,
+}) => {
   const trackListElem = useRef();
   const targetListItem = useRef();
 
@@ -16,7 +22,7 @@ const Search = ({ data, selectTrack, search, searchPage, setSearchPage }) => {
     let observer = new IntersectionObserver((entries, observer) => {
       const isIntersecting = entries[0].isIntersecting;
       if (isIntersecting && search !== "") {
-        setSearchPage(searchPage + 1);
+        setSearchPage((prevSearchPage) => prevSearchPage + 1);
       }
     }, options);
 
@@ -35,9 +41,8 @@ const Search = ({ data, selectTrack, search, searchPage, setSearchPage }) => {
         overflow: "auto",
       }}
     >
-      {data &&
-        data.tracks?.items.length > 0 &&
-        data.tracks.items.map((track) => (
+      {tracks.length > 0 &&
+        tracks.map((track) => (
           <TrackListItem
             key={track.uri}
             track={track}

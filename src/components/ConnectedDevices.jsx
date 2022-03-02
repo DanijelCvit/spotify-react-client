@@ -19,10 +19,11 @@ export default function ConnectedDevices({
 }) {
   const token = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
-  const { data, isLoading, errorMessage } = useFetch(
-    "/me/player/devices",
-    token
-  );
+  const {
+    data: devices,
+    isLoading,
+    errorMessage,
+  } = useFetch("devices", "/me/player/devices", token);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -58,9 +59,9 @@ export default function ConnectedDevices({
           horizontal: "center",
         }}
       >
-        {data.devices?.length > 0 && (
+        {devices.length > 0 && (
           <List>
-            {data.devices.map((device) => (
+            {devices.map((device) => (
               <ListItemButton
                 key={device.id}
                 onClick={() => setSelectedDevice(device.id)}

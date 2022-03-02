@@ -4,6 +4,8 @@
 
 The goal of this project will be to build a web music player with React that uses the Spotify API. The user should be able to login to his spotify account and get his playlists. He should be able to play his songs, search for new music and update/modify his playlists.
 
+NOTE: To use the playback feature a [spotify premium](https://developer.spotify.com/documentation/web-playback-sdk/) subscription is required.
+
 <p align="center"><img src="./assets/Webplayer.gif" ></p>
 
 ## Brand
@@ -17,6 +19,7 @@ Below is a list of my must haves and nice to haves for this project.
 The API I will be using is :
 
 - [Spotify API](https://developer.spotify.com/documentation/web-api/)
+- [Web Playback SDK](https://developer.spotify.com/documentation/web-playback-sdk/)
 
 The libraries / frameworks I will be using:
 

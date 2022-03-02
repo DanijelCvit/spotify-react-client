@@ -67,6 +67,7 @@ function Dashboard(props) {
   const [search, setSearch] = useState("");
   const [searchPage, setSearchPage] = useState(0);
   const { data, errorMessage, isLoading } = useFetch(
+    "tracks",
     `/search`,
     props.token,
     `?q=${search}&offset=${searchPage * 20}&limit=20&type=track`
