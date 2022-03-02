@@ -4,6 +4,8 @@
 
 The goal of this project will be to build a web music player with React that uses the Spotify API. The user should be able to login to his spotify account and get his playlists. He should be able to play his songs, search for new music and update/modify his playlists.
 
+<p align="center"><img src="./assets/Webplayer.gif" ></p>
+
 ## Brand
 
 The brand I will be basing my design off of will be [Apple](https://www.apple.com/). This means the focus will be on minimalistic design and colors (white, gray, black).
