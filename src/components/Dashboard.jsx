@@ -137,7 +137,8 @@ function Dashboard(props) {
                 }
               />
               <Route path="/library" element={<YourLibrary />} />
-              <Route path="/liked" element={<LikedSongs />} />{" "}
+              <Route path="/liked" element={<LikedSongs />} />
+              <Route path="*" element={<Home />} />
             </Routes>
             <Box>
               <WebPlayback token={props.token} />

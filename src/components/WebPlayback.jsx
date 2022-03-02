@@ -114,7 +114,7 @@ const WebPlayback = ({ token }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ device_ids: [selectedDevice], play: true }),
+          body: JSON.stringify({ device_ids: [selectedDevice], play: false }),
         });
       } catch (error) {
         console.log(error);
