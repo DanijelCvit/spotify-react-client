@@ -78,7 +78,6 @@ app.get("/auth/callback", (req, res) => {
       accessToken = body.access_token;
       expiresIn = body.expires_in;
       refreshToken = body.refresh_token;
-      console.log(body);
       res.redirect("/");
     }
   });

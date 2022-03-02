@@ -1,22 +1,20 @@
 import React from "react";
-import { useContext } from "react";
-import { AuthContext } from "../context/authContext.js";
-import Login from "../components/Login";
-import Dashboard from "../components/Dashboard";
+import Box from "@mui/material/Box";
 
 const Home = () => {
-  const token = useContext(AuthContext);
-
   return (
-    <>
-      {token === "" ? (
-        <Login />
-      ) : (
-        <>
-          <Dashboard token={token} />
-        </>
-      )}
-    </>
+    <Box
+      sx={{
+        flexGrow: 1,
+        backgroundColor: "rgba(255,255,255,0.7)",
+        backdropFilter: "blur(40px)",
+        boxShadow: "none",
+        color: "black",
+        overflow: "auto",
+      }}
+    >
+      Home
+    </Box>
   );
 };
 

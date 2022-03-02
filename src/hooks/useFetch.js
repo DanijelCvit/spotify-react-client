@@ -2,19 +2,18 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { BASE_API_URL } from "../constants.js";
 
-const useFetch = (endpoint, token, search = null, searchPage) => {
+const useFetch = (endpoint, token, query = "") => {
   const [data, setData] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const params = new URLSearchParams(query);
+  const offset = +params.get("offset");
+  const search = params.get("q");
+
   useEffect(() => {
     if (endpoint === "/search" && !search) {
       return setData({});
-    }
-
-    let query = "";
-    if (endpoint === "/search") {
-      query = `?q=${search}&type=track&offset=${searchPage * 20}&limit=20`;
     }
 
     const fetchData = async () => {
@@ -32,7 +31,7 @@ const useFetch = (endpoint, token, search = null, searchPage) => {
         if (json.error) {
           setErrorMessage(json.error.message);
         } else {
-          if (endpoint === "/search" && searchPage > 0) {
+          if (endpoint === "/search" && offset > 0) {
             setData((prevData) => {
               return {
                 tracks: {
@@ -53,7 +52,7 @@ const useFetch = (endpoint, token, search = null, searchPage) => {
     };
 
     fetchData();
-  }, [endpoint, token, search, searchPage]);
+  }, [endpoint, token, query]);
 
   return { data, errorMessage, isLoading };
 };
