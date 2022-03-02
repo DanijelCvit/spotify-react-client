@@ -44,7 +44,7 @@ const TinyText = styled(Typography)({
   letterSpacing: 0.2,
 });
 
-const WebPlayback = ({ token, setCurrentTrack, current_track }) => {
+const WebPlayback = ({ token }) => {
   const theme = useTheme();
 
   // Format time from ms to min:sec
@@ -63,6 +63,14 @@ const WebPlayback = ({ token, setCurrentTrack, current_track }) => {
   const [volume, setVolume] = useState(30);
   const [position, setPosition] = useState(0);
   const [selectedDevice, setSelectedDevice] = useState(null);
+  const [current_track, setCurrentTrack] = useState({
+    name: "",
+    album: {
+      images: [{ url: "" }],
+    },
+    artists: [{ name: "" }],
+    duration_ms: 0,
+  });
 
   const duration = Math.floor(current_track.duration_ms / 1000); // seconds
 
@@ -88,10 +96,7 @@ const WebPlayback = ({ token, setCurrentTrack, current_track }) => {
       setPosition(position + 1);
     }, 1000);
 
-    console.log("starting timeout", timeout);
-
     return () => {
-      console.log("stopping timeout", timeout);
       clearTimeout(timeout);
     };
   }, [is_paused, is_active, position]);

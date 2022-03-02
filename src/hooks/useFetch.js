@@ -2,20 +2,25 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { BASE_API_URL } from "../constants.js";
 
-const useFetch = (endpoint, token, dependency = null) => {
+const useFetch = (endpoint, token, search = null, searchPage) => {
   const [data, setData] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (dependency === "") {
+    if (endpoint === "/search" && !search) {
       return setData({});
+    }
+
+    let query = "";
+    if (endpoint === "/search") {
+      query = `?q=${search}&type=track&offset=${searchPage * 20}&limit=20`;
     }
 
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`${BASE_API_URL}${endpoint}`, {
+        const res = await fetch(`${BASE_API_URL}${endpoint}${query}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -27,8 +32,17 @@ const useFetch = (endpoint, token, dependency = null) => {
         if (json.error) {
           setErrorMessage(json.error.message);
         } else {
-          console.log(json);
-          setData(json);
+          if (endpoint === "/search" && searchPage > 0) {
+            setData((prevData) => {
+              return {
+                tracks: {
+                  items: [...prevData.tracks.items, ...json.tracks.items],
+                },
+              };
+            });
+          } else {
+            setData(json);
+          }
         }
       } catch (error) {
         setErrorMessage(error);
@@ -39,7 +53,7 @@ const useFetch = (endpoint, token, dependency = null) => {
     };
 
     fetchData();
-  }, [endpoint, token, dependency]);
+  }, [endpoint, token, search, searchPage]);
 
   return { data, errorMessage, isLoading };
 };

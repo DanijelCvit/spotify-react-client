@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -23,6 +23,10 @@ import InputBase from "@mui/material/InputBase";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import useFetch from "../hooks/useFetch.js";
 import { BASE_API_URL } from "../constants.js";
+import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
+import HomeIcon from "@mui/icons-material/Home";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { ListItemButton } from "@mui/material";
 
 const drawerWidth = 240;
 const theme = createTheme({
@@ -117,17 +121,42 @@ function Dashboard(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [currentTrack, setCurrentTrack] = useState({
-    name: "",
-    album: {
-      images: [{ url: "" }],
-    },
-    artists: [{ name: "" }],
-    duration_ms: 0,
-  });
+  const [searchPage, setSearchPage] = useState(0);
+  const { data, errorMessage, isLoading } = useFetch(
+    `/search`,
+    props.token,
+    search,
+    searchPage
+  );
+
+  console.log(searchPage);
+
+  const trackListElem = useRef();
+  const targetListItem = useRef();
+
+  useEffect(() => {
+    let options = {
+      root: trackListElem.current,
+      rootMargin: "50px",
+      threshold: 0,
+    };
+
+    let observer = new IntersectionObserver((entries, observer) => {
+      const isIntersecting = entries[0].isIntersecting;
+      console.log("entries\n", isIntersecting);
+      if (isIntersecting && search !== "") {
+        console.log("Loading page", searchPage);
+        setSearchPage(searchPage + 1);
+      }
+      // console.log("observer\n", observer);
+    }, options);
+
+    observer.observe(targetListItem.current);
+  }, []);
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
+    setSearchPage(0);
   };
 
   const selectTrack = async (track) => {
@@ -147,11 +176,8 @@ function Dashboard(props) {
         }),
       });
 
-      const json = await res.json();
-
-      if (json.error) {
-        console.log(json.error.message);
-      }
+      const text = await res.text();
+      console.log(text);
     } catch (error) {
       console.log(error);
     }
@@ -161,25 +187,35 @@ function Dashboard(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const { data, errorMessage, isLoading } = useFetch(
-    `/search?q=${search}&type=track`,
-    props.token,
-    search
-  );
-
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItemButton>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Home"} />
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon>
+            <SearchIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Search"} />
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon>
+            <LibraryMusicIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Your Library"} />
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon>
+            <FavoriteBorderIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Liked Songs"} />
+        </ListItemButton>
       </List>
       <Divider />
       <List>
@@ -295,7 +331,10 @@ function Dashboard(props) {
         >
           <Toolbar />
 
-          <Box
+          {/* <Box> */}
+          <List
+            id="trackList"
+            ref={trackListElem}
             sx={{
               flexGrow: 1,
               backgroundColor: "rgba(255,255,255,0.7)",
@@ -305,24 +344,23 @@ function Dashboard(props) {
               overflow: "auto",
             }}
           >
-            <List>
-              {data &&
-                data.tracks?.items.length > 0 &&
-                data.tracks.items.map((track) => (
-                  <TrackListItem
-                    key={track.uri}
-                    track={track}
-                    selectTrack={selectTrack}
-                  />
-                ))}
-            </List>
-          </Box>
+            {data &&
+              data.tracks?.items.length > 0 &&
+              data.tracks.items.map((track) => (
+                <TrackListItem
+                  key={track.uri}
+                  track={track}
+                  selectTrack={selectTrack}
+                />
+              ))}
+            <div
+              ref={targetListItem}
+              style={{ backgroundColor: "orange" }}
+            ></div>
+          </List>
+          {/* </Box> */}
           <Box>
-            <WebPlayback
-              token={props.token}
-              setCurrentTrack={setCurrentTrack}
-              current_track={currentTrack}
-            />
+            <WebPlayback token={props.token} />
           </Box>
         </Box>
       </Box>

@@ -22,8 +22,6 @@ const useAuth = () => {
     if (!refreshToken) {
       return;
     }
-    console.log("useEffect Refresh token running...");
-
     const timer = setInterval(() => {
       const refreshCurrentToken = async () => {
         const response = await fetch("/auth/refresh_token", {
@@ -37,7 +35,6 @@ const useAuth = () => {
         });
         const json = await response.json();
 
-        console.log("Refreshed token", json);
         setToken(json.accessToken);
         setExpiresIn(json.expiresIn);
       };
