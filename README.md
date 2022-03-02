@@ -8,7 +8,7 @@ The goal of this project will be to build a web music player with React that use
 
 ## Brand
 
-The brand I will be basing my design off of will be [Apple](https://www.apple.com/). This means the focus will be on minimalistic design and colors (white, gray, black).
+The brand I will be basing my design off of will be [Apple](https://www.apple.com/).
 
 ## Backlog
 
