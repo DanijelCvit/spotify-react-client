@@ -22,6 +22,7 @@ const SideBarNavigation = ({ selectTrack }) => {
     errorMessage,
   } = useFetch("items", "/me/tracks?limit=10", token);
 
+  console.log("savedTracks\n", savedTracks);
   return (
     <div>
       <Toolbar />

@@ -39,9 +39,9 @@ const useFetch = (resource, endpoint, token, query = "") => {
         } else {
           setData((prevData) => {
             if (json[resource].items) {
-              return [...prevData, ...json[resource].items];
+              return [...new Set([...prevData, ...json[resource].items])];
             }
-            return [...prevData, ...json[resource]];
+            return [...new Set([...prevData, ...json[resource]])];
           });
         }
       } catch (error) {
