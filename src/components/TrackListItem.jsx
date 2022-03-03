@@ -1,15 +1,15 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { ListItemButton, ListItemText, ImageListItem } from "@mui/material";
 
-const TrackListItem = ({ track, selectTrack, noImage }) => {
+const TrackListItem = forwardRef(({ track, selectTrack, noImage }, ref) => {
   const handleSelectTrack = () => {
     selectTrack(track);
   };
 
   return (
     <ListItemButton
+      ref={ref}
       onClick={handleSelectTrack}
-      key={track.uri}
       component="a"
       href="#simple-list"
     >
@@ -24,6 +24,6 @@ const TrackListItem = ({ track, selectTrack, noImage }) => {
       <ListItemText primary={track.name} secondary={track.artists[0].name} />
     </ListItemButton>
   );
-};
+});
 
 export default TrackListItem;

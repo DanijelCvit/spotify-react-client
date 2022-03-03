@@ -1,56 +1,83 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import List from "@mui/material/List";
 import TrackListItem from "../components/TrackListItem";
+import { LinearProgress } from "@mui/material";
+import { v4 as uuidv4 } from "uuid";
 
 const Search = ({
-  data: tracks,
+  data,
   selectTrack,
   search,
   searchPage,
   setSearchPage,
+  hasMore,
+  isLoading,
 }) => {
-  const trackListElem = useRef();
-  const targetListItem = useRef();
+  const observer = useRef();
+  const observerRootElem = useRef();
 
-  useEffect(() => {
-    let options = {
-      root: trackListElem.current,
-      rootMargin: "50px",
-      threshold: 0,
-    };
-
-    let observer = new IntersectionObserver((entries, observer) => {
-      const isIntersecting = entries[0].isIntersecting;
-      if (isIntersecting && search !== "") {
-        setSearchPage((prevSearchPage) => prevSearchPage + 1);
+  const targetListItem = useCallback(
+    (node) => {
+      if (isLoading) {
+        return;
       }
-    }, options);
+      if (observer.current) {
+        observer.current.disconnect();
+      }
 
-    observer.observe(targetListItem.current);
-  }, []);
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasMore) {
+            setSearchPage((prevSearchPage) => prevSearchPage + 1);
+          }
+        },
+        { root: observerRootElem.current, rootMargin: "50px", threshold: "0.0" }
+      );
+
+      if (node) {
+        observer.current.observe(node);
+      }
+    },
+    [isLoading, hasMore]
+  );
+
+  console.log(searchPage);
   return (
-    <List
-      id="trackList"
-      ref={trackListElem}
-      sx={{
-        flexGrow: 1,
-        backgroundColor: "rgba(255,255,255,0.7)",
-        backdropFilter: "blur(40px)",
-        boxShadow: "none",
-        color: "black",
-        overflow: "auto",
-      }}
-    >
-      {tracks.length > 0 &&
-        tracks.map((track) => (
-          <TrackListItem
-            key={track.uri}
-            track={track}
-            selectTrack={selectTrack}
-          />
-        ))}
-      <div ref={targetListItem} style={{ backgroundColor: "orange" }}></div>
-    </List>
+    <>
+      <List
+        ref={observerRootElem}
+        sx={{
+          flexGrow: 1,
+          backgroundColor: "rgba(255,255,255,0.7)",
+          backdropFilter: "blur(40px)",
+          boxShadow: "none",
+          color: "black",
+          overflow: "auto",
+        }}
+      >
+        {data.length > 0 &&
+          data.map((track, index) => {
+            if (index === data.length - 1) {
+              return (
+                <TrackListItem
+                  key={track.id}
+                  track={track}
+                  selectTrack={selectTrack}
+                  ref={targetListItem}
+                />
+              );
+            }
+            return (
+              <TrackListItem
+                key={uuidv4()}
+                track={track}
+                selectTrack={selectTrack}
+              />
+            );
+          })}
+      </List>
+      {isLoading && <LinearProgress sx={{ mb: 1 }} color="inherit" />}
+    </>
   );
 };
 

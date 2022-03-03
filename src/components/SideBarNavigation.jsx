@@ -16,13 +16,12 @@ import TrackListItem from "./TrackListItem";
 
 const SideBarNavigation = ({ selectTrack }) => {
   const token = useContext(AuthContext);
-  const {
-    data: savedTracks,
-    isLoading,
-    errorMessage,
-  } = useFetch("items", "/me/tracks?limit=10", token);
+  // const {
+  //   data: savedTracks,
+  //   isLoading,
+  //   errorMessage,
+  // } = useFetch("items", "/me/tracks?limit=10", token);
 
-  console.log("savedTracks\n", savedTracks);
   return (
     <div>
       <Toolbar />
@@ -54,17 +53,18 @@ const SideBarNavigation = ({ selectTrack }) => {
         </ListItemButton>
       </List>
       <Divider />
-      <List>
+      {/* <List>
         {savedTracks.length > 0 &&
           savedTracks.map(({ track }) => (
             <TrackListItem
-              key={track.uri}
+              key={track.id}
               track={track}
               selectTrack={selectTrack}
               noImage={true}
             />
           ))}
       </List>
+      {isLoading && <p>Loading...</p>} */}
     </div>
   );
 };

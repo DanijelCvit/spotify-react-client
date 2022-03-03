@@ -66,11 +66,11 @@ const WallPaper = styled("div")({
 function Dashboard(props) {
   const [search, setSearch] = useState("");
   const [searchPage, setSearchPage] = useState(0);
-  const { data, errorMessage, isLoading } = useFetch(
+  const { data, errorMessage, isLoading, hasMore } = useFetch(
     "tracks",
     `/search`,
     props.token,
-    `?q=${search}&offset=${searchPage * 20}&limit=20&type=track`
+    `?q=${search}&offset=${searchPage * 20}&limit=20&type=track&market=US`
   );
 
   const handleSearch = (event) => {
@@ -134,6 +134,8 @@ function Dashboard(props) {
                     search={search}
                     searchPage={searchPage}
                     setSearchPage={setSearchPage}
+                    hasMore={hasMore}
+                    isLoading={isLoading}
                   />
                 }
               />

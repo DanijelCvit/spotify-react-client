@@ -8,6 +8,7 @@
 /.pnp
 .pnp.js
 /server/.env
+.vscode
 
 # testing
 /coverage
