@@ -305,10 +305,10 @@ const WebPlayback = ({ token }) => {
           <IconButton onClick={() => player.nextTrack()} aria-label="next song">
             <FastForwardRounded fontSize="large" htmlColor={mainIconColor} />
           </IconButton>
-          {/* <ConnectedDevices
+          <ConnectedDevices
             selectedDevice={selectedDevice}
             setSelectedDevice={setSelectedDevice}
-          /> */}
+          />
         </Box>
       </Box>
       <Stack

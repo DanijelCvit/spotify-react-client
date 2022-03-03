@@ -12,6 +12,7 @@ import List from "@mui/material/List";
 import useFetch from "../hooks/useFetch.js";
 import { AuthContext } from "../context/authContext.js";
 import Typography from "@mui/material/Typography";
+import { LinearProgress } from "@mui/material";
 
 export default function ConnectedDevices({
   selectedDevice,
@@ -77,6 +78,7 @@ export default function ConnectedDevices({
             ))}
           </List>
         )}
+        {isLoading && <LinearProgress sx={{ mb: 1 }} color="inherit" />}
         {errorMessage && <Typography>{errorMessage}</Typography>}
       </Popover>
     </Box>

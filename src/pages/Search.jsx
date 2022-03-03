@@ -12,6 +12,7 @@ const Search = ({
   setSearchPage,
   hasMore,
   isLoading,
+  errorMessage,
 }) => {
   const observer = useRef();
   const observerRootElem = useRef();
@@ -77,6 +78,7 @@ const Search = ({
           })}
       </List>
       {isLoading && <LinearProgress sx={{ mb: 1 }} color="inherit" />}
+      {errorMessage}
     </>
   );
 };

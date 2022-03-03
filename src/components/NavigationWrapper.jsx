@@ -42,7 +42,7 @@ const NavigationWrapper = ({
           color: "black",
         }}
       >
-        <Toolbar sx={{ justifyContent: "center" }}>
+        <Toolbar sx={{ justifyContent: { xs: "center" } }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"

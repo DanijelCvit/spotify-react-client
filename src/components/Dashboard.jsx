@@ -136,6 +136,7 @@ function Dashboard(props) {
                     setSearchPage={setSearchPage}
                     hasMore={hasMore}
                     isLoading={isLoading}
+                    errorMessage={errorMessage}
                   />
                 }
               />

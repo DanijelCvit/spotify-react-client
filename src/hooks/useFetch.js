@@ -45,12 +45,12 @@ const useFetch = (resource, endpoint, token, query = "") => {
           setErrorMessage(json.error.message);
         } else {
           setData((prevData) => {
-            // if (json[resource].items) {
-            setHasMore(json[resource].items.length > 0);
-            return [...prevData, ...json[resource].items];
-            // }
-            // setHasMore(json[resource].length > 0);
-            // return [...prevData, ...json[resource]];
+            if (json[resource].items) {
+              setHasMore(json[resource].items.length > 0);
+              return [...prevData, ...json[resource].items];
+            }
+            setHasMore(json[resource].length > 0);
+            return [...prevData, ...json[resource]];
           });
         }
       } catch (error) {

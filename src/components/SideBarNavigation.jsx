@@ -13,20 +13,22 @@ import useFetch from "../hooks/useFetch";
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext.js";
 import TrackListItem from "./TrackListItem";
+import { LinearProgress } from "@mui/material";
+import Box from "@mui/material/Box";
 
 const SideBarNavigation = ({ selectTrack }) => {
   const token = useContext(AuthContext);
-  // const {
-  //   data: savedTracks,
-  //   isLoading,
-  //   errorMessage,
-  // } = useFetch("items", "/me/tracks?limit=10", token);
+  const {
+    data: savedTracks,
+    isLoading,
+    errorMessage,
+  } = useFetch("items", "/me/tracks?limit=10", token);
 
   return (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+      <Toolbar sx={{ flexShrink: "0" }} />
+      <Divider sx={{ flexShrink: "0" }} />
+      <List sx={{ flexShrink: "0" }}>
         <ListItemButton component={NavLink} to="/">
           <ListItemIcon>
             <HomeIcon />
@@ -53,7 +55,7 @@ const SideBarNavigation = ({ selectTrack }) => {
         </ListItemButton>
       </List>
       <Divider />
-      {/* <List>
+      <List sx={{ height: "100%", overflowY: "auto" }}>
         {savedTracks.length > 0 &&
           savedTracks.map(({ track }) => (
             <TrackListItem
@@ -64,7 +66,8 @@ const SideBarNavigation = ({ selectTrack }) => {
             />
           ))}
       </List>
-      {isLoading && <p>Loading...</p>} */}
+      {isLoading && <LinearProgress sx={{ mb: 1 }} color="inherit" />}
+      {errorMessage}
     </div>
   );
 };
