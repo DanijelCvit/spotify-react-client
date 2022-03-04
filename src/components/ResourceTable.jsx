@@ -8,21 +8,17 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
-import { ListItemText } from "@mui/material";
-import { ImageListItem } from "@mui/material";
+import ResourceRow from "./ResourceRow";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)({
   [`&.${tableCellClasses.head}`]: {
-    //e3afe0
     backgroundColor: "rgba(243,172,216,0.7)",
-    // backgroundImage: "linear-gradient(to right, red , yellow)",
-
     backdropFilter: "blur(40px)",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
-}));
+});
 
 const columns = [
   { id: "title", label: "Title", minWidth: 170 },
@@ -36,6 +32,7 @@ const columns = [
 ];
 
 const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
+  // Setting up a observer for last row to trigger infinite scroll
   const observer = useRef();
   const observerRootElem = useRef();
 
@@ -64,12 +61,6 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
     [isLoading, hasMore]
   );
 
-  const textStyle = {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  };
-
   return (
     <Paper
       ref={observerRootElem}
@@ -88,6 +79,7 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
         <Table stickyHeader aria-label="sticky table">
           <TableHead sx={{ position: "relative" }}>
             <TableRow sx={{ border: 0 }}>
+              <StyledTableCell style={{ minWidth: "100px" }}>#</StyledTableCell>
               {columns.map((column) => (
                 <StyledTableCell
                   key={column.id}
@@ -104,72 +96,22 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
               rows.map((row, index) => {
                 if (index === rows.length - 1) {
                   return (
-                    <TableRow
-                      ref={targetListItem}
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
+                    <ResourceRow
                       key={row.id}
-                    >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.id === "title" ? (
-                              <div style={{ display: "flex" }}>
-                                <ImageListItem
-                                  sx={{ width: "50px", height: "50px", mr: 1 }}
-                                >
-                                  <img
-                                    src={`${value.imageUrl}`}
-                                    loading="lazy"
-                                  />
-                                </ImageListItem>
-                                <ListItemText
-                                  primary={value.name}
-                                  secondary={value.artistName}
-                                />
-                              </div>
-                            ) : (
-                              value
-                            )}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
+                      row={row}
+                      columns={columns}
+                      index={index}
+                      ref={targetListItem}
+                    />
                   );
                 } else {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.id === "title" ? (
-                              <div style={{ display: "flex" }}>
-                                <ImageListItem
-                                  sx={{ width: "50px", height: "50px", mr: 1 }}
-                                >
-                                  <img
-                                    src={`${
-                                      value.imageUrl
-                                    }?w=${64}&h=${64}&fit=crop&auto=format`}
-                                    loading="lazy"
-                                  />
-                                </ImageListItem>
-                                <ListItemText
-                                  primaryTypographyProps={{}}
-                                  primary={value.name}
-                                  secondary={value.artistName}
-                                />
-                              </div>
-                            ) : (
-                              value
-                            )}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
+                    <ResourceRow
+                      row={row}
+                      columns={columns}
+                      index={index}
+                      key={row.id}
+                    />
                   );
                 }
               })}
