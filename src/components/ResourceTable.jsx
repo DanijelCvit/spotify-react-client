@@ -1,11 +1,10 @@
-import * as React from "react";
+import React, { useCallback, useRef } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
 const columns = [
@@ -19,19 +18,49 @@ const columns = [
   },
 ];
 
-const ResourceTable = React.forwardRef(({ rows }, ref) => {
+const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
+  const observer = useRef();
+  const observerRootElem = useRef();
+
+  const targetListItem = useCallback(
+    (node) => {
+      if (isLoading) {
+        return;
+      }
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasMore) {
+            setSearchPage((prevSearchPage) => prevSearchPage + 1);
+          }
+        },
+        { root: observerRootElem.current, rootMargin: "50px", threshold: "0.0" }
+      );
+
+      if (node) {
+        observer.current.observe(node);
+      }
+    },
+    [isLoading, hasMore]
+  );
+
   return (
     <Paper
+      ref={observerRootElem}
       sx={{
         backgroundColor: "rgba(255,255,255,0.7)",
         backdropFilter: "blur(40px)",
         boxShadow: "none",
         color: "black",
         // width: "100%",
+        flexGrow: 1,
         overflow: "hidden",
       }}
     >
-      <TableContainer sx={{ maxHeight: "500px" }}>
+      <TableContainer sx={{ maxHeight: "100%" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -65,7 +94,7 @@ const ResourceTable = React.forwardRef(({ rows }, ref) => {
                 } else {
                   return (
                     <TableRow
-                      ref={ref}
+                      ref={targetListItem}
                       hover
                       role="checkbox"
                       tabIndex={-1}
@@ -88,6 +117,6 @@ const ResourceTable = React.forwardRef(({ rows }, ref) => {
       </TableContainer>
     </Paper>
   );
-});
+};
 
 export default ResourceTable;
