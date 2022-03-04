@@ -6,6 +6,18 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { tableCellClasses } from "@mui/material/TableCell";
+import { styled } from "@mui/material/styles";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "rgba(224,176,226,0.7)",
+    backdropFilter: "blur(40px)",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
 const columns = [
   { id: "title", label: "Title", minWidth: 170 },
@@ -58,20 +70,21 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
         // width: "100%",
         flexGrow: 1,
         overflow: "hidden",
+        borderRadius: 0,
       }}
     >
       <TableContainer sx={{ maxHeight: "100%" }}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead>
+          <TableHead sx={{ position: "relative" }}>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
+                <StyledTableCell
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
-                </TableCell>
+                </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>
