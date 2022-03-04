@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import WebPlayback from "./WebPlayback";
-import { styled } from "@mui/material/styles";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import useFetch from "../hooks/useFetch.js";
 import { BASE_API_URL } from "../constants.js";
@@ -18,12 +17,14 @@ import { WallPaper } from "./WallPaper";
 const drawerWidth = 240;
 const theme = createTheme({
   components: {
-    // Name of the component
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: false, // No more ripple!
+      },
+    },
     MuiPaper: {
       styleOverrides: {
-        // Name of the slot
         root: {
-          // Some CSS
           backgroundColor: "rgba(255,255,255,0.1)",
           backdropFilter: "blur(40px)",
         },

@@ -4,6 +4,7 @@ import TableRow from "@mui/material/TableRow";
 import { Button, ListItemText } from "@mui/material";
 import { ImageListItem } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 
 const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
   const [selected, setSelected] = useState(false);
@@ -27,9 +28,11 @@ const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
     >
       <TableCell>
         <Button
+          disableRipple={true}
           sx={{
             color: "black",
             "&.MuiButtonBase-root:hover": { backgroundColor: "transparent" },
+            "&.MuiRippleCircle": { display: "none" },
           }}
         >
           <PlayCircleOutlineIcon
