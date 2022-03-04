@@ -14,7 +14,6 @@ const Search = ({
   isLoading,
   errorMessage,
 }) => {
-  console.log(searchPage);
   const tracks = data.map((track) => ({
     id: uuidv4(),
     title: {

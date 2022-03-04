@@ -13,6 +13,7 @@ import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import ConnectedDevices from "./ConnectedDevices";
 import { BASE_API_URL } from "../constants.js";
+import { formatDuration } from "../utils/utils.js";
 
 const Widget = styled(Stack)(({ theme }) => ({
   maxWidth: "100%",
@@ -47,12 +48,6 @@ const TinyText = styled(Typography)({
 const WebPlayback = ({ token }) => {
   const theme = useTheme();
 
-  // Format time from ms to min:sec
-  function formatDuration(value) {
-    const minute = Math.floor(value / 60);
-    const secondLeft = value - minute * 60;
-    return `${minute}:${secondLeft <= 9 ? `0${secondLeft}` : secondLeft}`;
-  }
   const mainIconColor = theme.palette.mode === "dark" ? "#fff" : "#000";
   const lightIconColor =
     theme.palette.mode === "dark" ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)";

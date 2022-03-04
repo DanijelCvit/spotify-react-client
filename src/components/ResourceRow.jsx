@@ -8,15 +8,11 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
   const [selected, setSelected] = useState(false);
 
-  const handleOnMouseOver = (e) => {
-    console.log("select row");
-    console.log(e.target);
+  const handleOnMouseOver = () => {
     setSelected(true);
   };
 
-  const handleOnMouseOut = (e) => {
-    console.log("deselect row");
-    console.log(e.target);
+  const handleOnMouseOut = () => {
     setSelected(false);
   };
 

@@ -15,7 +15,6 @@ const useFetch = (resource, endpoint, token, query = "") => {
 
   // If search string is different, clear array before appending next result page
   useEffect(() => {
-    console.log("reset data\n", search, type);
     setData([]);
   }, [search, type]);
 
