@@ -8,10 +8,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
+import { ListItemText } from "@mui/material";
+import { ImageListItem } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "rgba(224,176,226,0.7)",
+    //e3afe0
+    backgroundColor: "rgba(243,172,216,0.7)",
+    // backgroundImage: "linear-gradient(to right, red , yellow)",
+
     backdropFilter: "blur(40px)",
   },
   [`&.${tableCellClasses.body}`]: {
@@ -59,6 +64,12 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
     [isLoading, hasMore]
   );
 
+  const textStyle = {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  };
+
   return (
     <Paper
       ref={observerRootElem}
@@ -67,7 +78,7 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
         backdropFilter: "blur(40px)",
         boxShadow: "none",
         color: "black",
-        // width: "100%",
+        width: "100%",
         flexGrow: 1,
         overflow: "hidden",
         borderRadius: 0,
@@ -76,7 +87,7 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
       <TableContainer sx={{ maxHeight: "100%" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead sx={{ position: "relative" }}>
-            <TableRow>
+            <TableRow sx={{ border: 0 }}>
               {columns.map((column) => (
                 <StyledTableCell
                   key={column.id}
@@ -93,19 +104,6 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
               rows.map((row, index) => {
                 if (index === rows.length - 1) {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                } else {
-                  return (
                     <TableRow
                       ref={targetListItem}
                       hover
@@ -117,7 +115,57 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
                         const value = row[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {value}
+                            {column.id === "title" ? (
+                              <div style={{ display: "flex" }}>
+                                <ImageListItem
+                                  sx={{ width: "50px", height: "50px", mr: 1 }}
+                                >
+                                  <img
+                                    src={`${value.imageUrl}`}
+                                    loading="lazy"
+                                  />
+                                </ImageListItem>
+                                <ListItemText
+                                  primary={value.name}
+                                  secondary={value.artistName}
+                                />
+                              </div>
+                            ) : (
+                              value
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                } else {
+                  return (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                      {columns.map((column) => {
+                        const value = row[column.id];
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.id === "title" ? (
+                              <div style={{ display: "flex" }}>
+                                <ImageListItem
+                                  sx={{ width: "50px", height: "50px", mr: 1 }}
+                                >
+                                  <img
+                                    src={`${
+                                      value.imageUrl
+                                    }?w=${64}&h=${64}&fit=crop&auto=format`}
+                                    loading="lazy"
+                                  />
+                                </ImageListItem>
+                                <ListItemText
+                                  primaryTypographyProps={{}}
+                                  primary={value.name}
+                                  secondary={value.artistName}
+                                />
+                              </div>
+                            ) : (
+                              value
+                            )}
                           </TableCell>
                         );
                       })}
