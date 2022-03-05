@@ -6,7 +6,7 @@ import { ImageListItem } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 
-const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
+const ResourceRow = forwardRef(({ row, columns, index, selectTrack }, ref) => {
   const [selected, setSelected] = useState(false);
 
   const handleOnMouseOver = () => {
@@ -28,6 +28,7 @@ const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
     >
       <TableCell>
         <Button
+          onClick={() => selectTrack(row)}
           disableRipple={true}
           sx={{
             color: "black",

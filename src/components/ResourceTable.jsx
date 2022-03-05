@@ -31,7 +31,13 @@ const columns = [
   },
 ];
 
-const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
+const ResourceTable = ({
+  rows,
+  isLoading,
+  hasMore,
+  setSearchPage,
+  selectTrack,
+}) => {
   // Setting up a observer for last row to trigger infinite scroll
   const observer = useRef();
   const observerRootElem = useRef();
@@ -102,6 +108,7 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
                       columns={columns}
                       index={index}
                       ref={targetListItem}
+                      selectTrack={selectTrack}
                     />
                   );
                 } else {
@@ -111,6 +118,7 @@ const ResourceTable = ({ rows, isLoading, hasMore, setSearchPage }) => {
                       columns={columns}
                       index={index}
                       key={row.id}
+                      selectTrack={selectTrack}
                     />
                   );
                 }

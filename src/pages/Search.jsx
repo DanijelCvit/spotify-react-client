@@ -23,6 +23,7 @@ const Search = ({
     },
     album: track.album.name,
     duration: formatDuration(Math.floor(track.duration_ms / 1000)),
+    uri: track.uri,
   }));
   return (
     <>
@@ -31,6 +32,7 @@ const Search = ({
         isLoading={isLoading}
         hasMore={hasMore}
         setSearchPage={setSearchPage}
+        selectTrack={selectTrack}
       />
       {isLoading && <LinearProgress sx={{ mb: 1 }} color="inherit" />}
       {errorMessage}
