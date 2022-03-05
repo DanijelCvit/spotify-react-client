@@ -24,7 +24,7 @@ const DashboardProvider = ({ children }) => {
   const [searchPage, setSearchPage] = useState(0);
 
   const handleSearch = (event) => {
-    setSearch(event.target.value);
+    setSearch(event.target.value.trim());
     setSearchPage(0);
   };
 

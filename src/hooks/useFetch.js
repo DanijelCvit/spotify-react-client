@@ -43,6 +43,7 @@ const useFetch = (resource, endpoint, token, query = "") => {
         if (json.error) {
           setErrorMessage(json.error.message);
         } else {
+          setErrorMessage("");
           setData((prevData) => {
             if (json[resource].items) {
               setHasMore(json[resource].items.length > 0);

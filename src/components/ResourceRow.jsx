@@ -6,8 +6,14 @@ import { ImageListItem } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import { DashboardContext } from "../context/dashboardContext.js";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { BASE_API_URL } from "../constants.js";
+import { AuthContext } from "../context/authContext.js";
+import { useLocation } from "react-router-dom";
 
 const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
+  const location = useLocation();
+  const token = useContext(AuthContext);
   const [selected, setSelected] = useState(false);
 
   const { player, selectTrack, is_paused, current_track } =
@@ -33,7 +39,22 @@ const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
     player.togglePlay();
   };
 
-  console.log(current_track.uri, row.uri);
+  const handleFavorite = async () => {
+    try {
+      const res = await fetch(`${BASE_API_URL}/me/tracks`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ids: [row.uri.split(":")[2]],
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <TableRow
@@ -110,7 +131,38 @@ const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
               </div>
             ) : (
               <span style={{ color: isPlaying ? "#a17799" : "inherit" }}>
-                {value}
+                {column.id === "duration" && location.pathname !== "/liked" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Button
+                      onClick={handleFavorite}
+                      disableRipple={true}
+                      sx={{
+                        color: "black",
+                        "&.MuiButtonBase-root:hover": {
+                          backgroundColor: "transparent",
+                        },
+                        "&.MuiRippleCircle": { display: "none" },
+                      }}
+                    >
+                      <FavoriteBorderIcon
+                        sx={{
+                          width: "30px",
+                          height: "30px",
+                          display: selected ? "block" : "none",
+                        }}
+                      />
+                    </Button>
+                    <span>{value}</span>
+                  </div>
+                ) : (
+                  value
+                )}
               </span>
             )}
           </TableCell>
