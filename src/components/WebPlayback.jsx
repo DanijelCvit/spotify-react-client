@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -14,6 +14,7 @@ import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import ConnectedDevices from "./ConnectedDevices";
 import { BASE_API_URL } from "../constants.js";
 import { formatDuration } from "../utils/utils.js";
+import { AuthContext } from "../context/authContext.js";
 
 const Widget = styled(Stack)(({ theme }) => ({
   maxWidth: "100%",
@@ -45,7 +46,8 @@ const TinyText = styled(Typography)({
   letterSpacing: 0.2,
 });
 
-const WebPlayback = ({ token }) => {
+const WebPlayback = () => {
+  const token = useContext(AuthContext);
   const theme = useTheme();
 
   const mainIconColor = theme.palette.mode === "dark" ? "#fff" : "#000";

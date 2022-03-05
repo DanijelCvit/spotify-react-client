@@ -1,19 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { LinearProgress } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
 import ResourceTable from "../components/ResourceTable";
 import { formatDuration } from "../utils/utils.js";
+import { DashboardContext } from "../context/dashboardContext.js";
 
-const Search = ({
-  data,
-  selectTrack,
-  search,
-  searchPage,
-  setSearchPage,
-  hasMore,
-  isLoading,
-  errorMessage,
-}) => {
+const Search = () => {
+  const {
+    data,
+    selectTrack,
+    search,
+    hasMore,
+    errorMessage,
+    isLoading,
+    setSearchPage,
+  } = useContext(DashboardContext);
+
   const tracks = data.map((track) => ({
     id: uuidv4(),
     title: {

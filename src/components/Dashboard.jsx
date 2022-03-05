@@ -13,6 +13,7 @@ import Home from "../pages/Home";
 import LikedSongs from "../pages/LikedSongs";
 import YourLibrary from "../pages/YourLibrary";
 import { WallPaper } from "./WallPaper";
+import DashboardProvider from "../context/dashboardContext.js";
 
 const drawerWidth = 240;
 const theme = createTheme({
@@ -33,94 +34,41 @@ const theme = createTheme({
   },
 });
 
-function Dashboard(props) {
-  const [search, setSearch] = useState("");
-  const [searchPage, setSearchPage] = useState(0);
-  const { data, errorMessage, isLoading, hasMore } = useFetch(
-    "tracks",
-    `/search`,
-    props.token,
-    `?q=${search}&offset=${searchPage * 20}&limit=20&type=track&market=US`
-  );
-
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
-    setSearchPage(0);
-  };
-
-  const selectTrack = async (track) => {
-    try {
-      const res = await fetch(`${BASE_API_URL}/me/player/play`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${props.token}`,
-        },
-        body: JSON.stringify({
-          uris: [track.uri],
-          offset: {
-            position: 0,
-          },
-          position_ms: 0,
-        }),
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+function Dashboard() {
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <Router>
-          <NavigationWrapper
-            handleSearch={handleSearch}
-            drawerWidth={drawerWidth}
-            search={search}
-            selectTrack={selectTrack}
-            {...props}
-          />
-          <Box
-            component="main"
-            sx={{
-              display: "flex",
-              flexGrow: 1,
-              width: { sm: `calc(100% - ${drawerWidth}px)` },
-              flexDirection: "column",
-              height: "100vh",
-            }}
-          >
-            <Toolbar />
+      <DashboardProvider>
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          <Router>
+            <NavigationWrapper drawerWidth={drawerWidth} />
+            <Box
+              component="main"
+              sx={{
+                display: "flex",
+                flexGrow: 1,
+                width: { sm: `calc(100% - ${drawerWidth}px)` },
+                flexDirection: "column",
+                height: "100vh",
+              }}
+            >
+              <Toolbar />
 
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route
-                path="/search"
-                element={
-                  <Search
-                    data={data}
-                    selectTrack={selectTrack}
-                    search={search}
-                    searchPage={searchPage}
-                    setSearchPage={setSearchPage}
-                    hasMore={hasMore}
-                    isLoading={isLoading}
-                    errorMessage={errorMessage}
-                  />
-                }
-              />
-              <Route path="/library" element={<YourLibrary />} />
-              <Route path="/liked" element={<LikedSongs />} />
-              <Route path="*" element={<Home />} />
-            </Routes>
-            <Box>
-              <WebPlayback token={props.token} />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/library" element={<YourLibrary />} />
+                <Route path="/liked" element={<LikedSongs />} />
+                <Route path="*" element={<Home />} />
+              </Routes>
+              <Box>
+                <WebPlayback />
+              </Box>
             </Box>
-          </Box>
-        </Router>
-      </Box>
-      <WallPaper sx={{ zIndex: -1 }} />
+          </Router>
+        </Box>
+        <WallPaper sx={{ zIndex: -1 }} />
+      </DashboardProvider>
     </ThemeProvider>
   );
 }

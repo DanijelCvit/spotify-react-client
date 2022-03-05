@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -9,15 +9,14 @@ import Toolbar from "@mui/material/Toolbar";
 import SideBarNavigation from "./SideBarNavigation";
 import MusicSearch from "./MusicSearch";
 import { useLocation } from "react-router-dom";
+import { DashboardContext } from "../context/dashboardContext.js";
 
-const NavigationWrapper = ({
-  drawerWidth,
-  search,
-  handleSearch,
-  selectTrack,
-  ...otherProps
-}) => {
+const NavigationWrapper = ({ drawerWidth }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const { search, handleSearch, selectTrack, ...otherProps } =
+    useContext(DashboardContext);
+
   const { window } = otherProps;
 
   const handleDrawerToggle = () => {

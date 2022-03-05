@@ -13,7 +13,7 @@ const Main = () => {
         <Login />
       ) : (
         <>
-          <Dashboard token={token} />
+          <Dashboard />
         </>
       )}
     </>
