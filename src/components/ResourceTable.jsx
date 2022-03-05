@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useContext, useRef } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
 import ResourceRow from "./ResourceRow";
+import { DashboardContext } from "../context/dashboardContext.js";
 
 const StyledTableCell = styled(TableCell)({
   [`&.${tableCellClasses.head}`]: {
@@ -31,13 +32,9 @@ const columns = [
   },
 ];
 
-const ResourceTable = ({
-  rows,
-  isLoading,
-  hasMore,
-  setSearchPage,
-  selectTrack,
-}) => {
+const ResourceTable = ({ rows }) => {
+  const { isLoading, hasMore, setSearchPage, selectTrack } =
+    useContext(DashboardContext);
   // Setting up a observer for last row to trigger infinite scroll
   const observer = useRef();
   const observerRootElem = useRef();

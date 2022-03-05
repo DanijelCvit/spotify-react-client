@@ -6,16 +6,9 @@ import { formatDuration } from "../utils/utils.js";
 import { DashboardContext } from "../context/dashboardContext.js";
 
 const Search = () => {
-  const {
-    data,
-    selectTrack,
-    search,
-    hasMore,
-    errorMessage,
-    isLoading,
-    setSearchPage,
-  } = useContext(DashboardContext);
+  const { data, errorMessage, isLoading } = useContext(DashboardContext);
 
+  // Filter data to
   const tracks = data.map((track) => ({
     id: uuidv4(),
     title: {
@@ -29,13 +22,7 @@ const Search = () => {
   }));
   return (
     <>
-      <ResourceTable
-        rows={tracks}
-        isLoading={isLoading}
-        hasMore={hasMore}
-        setSearchPage={setSearchPage}
-        selectTrack={selectTrack}
-      />
+      <ResourceTable rows={tracks} />
       {isLoading && <LinearProgress sx={{ mb: 1 }} color="inherit" />}
       {errorMessage}
     </>

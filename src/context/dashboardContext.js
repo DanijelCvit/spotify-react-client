@@ -7,6 +7,18 @@ import { AuthContext } from "./authContext.js";
 export const DashboardContext = createContext();
 
 const DashboardProvider = ({ children }) => {
+  const [is_paused, setPaused] = useState(false);
+  const [player, setPlayer] = useState(undefined);
+
+  const [current_track, setCurrentTrack] = useState({
+    name: "",
+    album: {
+      images: [{ url: "" }],
+    },
+    artists: [{ name: "" }],
+    duration_ms: 0,
+  });
+
   const token = useContext(AuthContext);
   const [search, setSearch] = useState("");
   const [searchPage, setSearchPage] = useState(0);
@@ -55,6 +67,12 @@ const DashboardProvider = ({ children }) => {
         errorMessage,
         isLoading,
         hasMore,
+        is_paused,
+        current_track,
+        setPaused,
+        setCurrentTrack,
+        player,
+        setPlayer,
       }}
     >
       {children}

@@ -15,6 +15,7 @@ import ConnectedDevices from "./ConnectedDevices";
 import { BASE_API_URL } from "../constants.js";
 import { formatDuration } from "../utils/utils.js";
 import { AuthContext } from "../context/authContext.js";
+import { DashboardContext } from "../context/dashboardContext.js";
 
 const Widget = styled(Stack)(({ theme }) => ({
   maxWidth: "100%",
@@ -54,20 +55,20 @@ const WebPlayback = () => {
   const lightIconColor =
     theme.palette.mode === "dark" ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)";
 
-  const [player, setPlayer] = useState(undefined);
-  const [is_paused, setPaused] = useState(false);
+  // const [player, setPlayer] = useState(undefined);
   const [is_active, setActive] = useState(false);
   const [volume, setVolume] = useState(30);
   const [position, setPosition] = useState(0);
   const [selectedDevice, setSelectedDevice] = useState(null);
-  const [current_track, setCurrentTrack] = useState({
-    name: "",
-    album: {
-      images: [{ url: "" }],
-    },
-    artists: [{ name: "" }],
-    duration_ms: 0,
-  });
+
+  const {
+    player,
+    setPlayer,
+    is_paused,
+    current_track,
+    setPaused,
+    setCurrentTrack,
+  } = useContext(DashboardContext);
 
   const duration = Math.floor(current_track.duration_ms / 1000); // seconds
 
@@ -327,7 +328,7 @@ const WebPlayback = () => {
             "& .MuiSlider-thumb": {
               width: 24,
               height: 24,
-              backgroundColor: "#fff",
+              backgroundColor: "#fee0d9",
               "&:before": {
                 boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
               },
