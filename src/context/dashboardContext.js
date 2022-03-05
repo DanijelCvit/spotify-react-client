@@ -22,12 +22,6 @@ const DashboardProvider = ({ children }) => {
   const token = useContext(AuthContext);
   const [search, setSearch] = useState("");
   const [searchPage, setSearchPage] = useState(0);
-  const { data, errorMessage, isLoading, hasMore } = useFetch(
-    "tracks",
-    `/search`,
-    token,
-    `?q=${search}&offset=${searchPage * 20}&limit=20&type=track&market=US`
-  );
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -60,13 +54,9 @@ const DashboardProvider = ({ children }) => {
       value={{
         selectTrack,
         search,
-        handleSearch,
         searchPage,
         setSearchPage,
-        data,
-        errorMessage,
-        isLoading,
-        hasMore,
+        handleSearch,
         is_paused,
         current_track,
         setPaused,

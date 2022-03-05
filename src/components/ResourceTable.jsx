@@ -32,9 +32,8 @@ const columns = [
   },
 ];
 
-const ResourceTable = ({ rows }) => {
-  const { isLoading, hasMore, setSearchPage, selectTrack } =
-    useContext(DashboardContext);
+const ResourceTable = ({ rows, setPage, isLoading, hasMore }) => {
+  const { selectTrack } = useContext(DashboardContext);
   // Setting up a observer for last row to trigger infinite scroll
   const observer = useRef();
   const observerRootElem = useRef();
@@ -51,7 +50,8 @@ const ResourceTable = ({ rows }) => {
       observer.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && hasMore) {
-            setSearchPage((prevSearchPage) => prevSearchPage + 1);
+            console.log("triggered observer");
+            setPage((prevPage) => prevPage + 1);
           }
         },
         { root: observerRootElem.current, rootMargin: "50px", threshold: "0.0" }

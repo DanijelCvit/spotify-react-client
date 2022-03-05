@@ -9,17 +9,11 @@ import { DashboardContext } from "../context/dashboardContext.js";
 
 const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
   const [selected, setSelected] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    if (row.uri === current_track.uri && !is_paused) {
-      setIsPlaying(true);
-    }
-  });
 
   const { player, selectTrack, is_paused, current_track } =
     useContext(DashboardContext);
 
+  const isPlaying = !is_paused && current_track.uri === row.uri;
   const handleOnMouseOver = () => {
     setSelected(true);
   };
@@ -36,9 +30,10 @@ const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
   };
 
   const handlePauseTrack = () => {
-    setIsPlaying(false);
     player.togglePlay();
   };
+
+  console.log(current_track.uri, row.uri);
 
   return (
     <TableRow
@@ -50,7 +45,7 @@ const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
       tabIndex={-1}
     >
       <TableCell>
-        {isPlaying ? (
+        {!is_paused && current_track.uri === row.uri ? (
           <Button
             onClick={handlePauseTrack}
             disableRipple={true}
