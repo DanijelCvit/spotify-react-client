@@ -22,7 +22,6 @@ const LikedSongs = () => {
   const [tracks, setTracks] = useState([]);
 
   useEffect(() => {
-    console.log(tracks);
     const updatedTracks = data.map(({ track }) => ({
       id: uuidv4(),
       title: {

@@ -1,7 +1,6 @@
 import { createContext, useContext } from "react";
 import { useState } from "react";
 import { BASE_API_URL } from "../constants.js";
-import useFetch from "../hooks/useFetch.js";
 import { AuthContext } from "./authContext.js";
 
 export const DashboardContext = createContext();
@@ -61,9 +60,6 @@ const DashboardProvider = ({ children }) => {
           ids: [row.uri.split(":")[2]],
         }),
       });
-
-      const data = await res.json();
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

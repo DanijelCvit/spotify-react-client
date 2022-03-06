@@ -38,7 +38,6 @@ const useFetch = (resource, endpoint, token, query = "") => {
         });
 
         const json = await res.json();
-        console.log(json);
 
         if (json.error) {
           setErrorMessage(json.error.message);

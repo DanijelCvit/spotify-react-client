@@ -14,7 +14,6 @@ import { useContext } from "react";
 import { AuthContext } from "../context/authContext.js";
 import TrackListItem from "./TrackListItem";
 import { LinearProgress } from "@mui/material";
-import Box from "@mui/material/Box";
 import { v4 as uuidv4 } from "uuid";
 
 const SideBarNavigation = ({ selectTrack }) => {

@@ -1,11 +1,8 @@
-import { useState } from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import WebPlayback from "./WebPlayback";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import useFetch from "../hooks/useFetch.js";
-import { BASE_API_URL } from "../constants.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavigationWrapper from "./NavigationWrapper";
 import Search from "../pages/Search";
