@@ -51,7 +51,7 @@ const NavigationWrapper = ({ drawerWidth }) => {
           >
             <MenuIcon />
           </IconButton>
-          {location.pathname === "/search" && (
+          {location.pathname === "/" && (
             <MusicSearch search={search} handleSearch={handleSearch} />
           )}
         </Toolbar>

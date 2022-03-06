@@ -6,9 +6,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavigationWrapper from "./NavigationWrapper";
 import Search from "../pages/Search";
-import Home from "../pages/Home";
 import LikedSongs from "../pages/LikedSongs";
-import YourLibrary from "../pages/YourLibrary";
 import { WallPaper } from "./WallPaper";
 import DashboardProvider from "../context/dashboardContext.js";
 
@@ -51,11 +49,9 @@ function Dashboard() {
             >
               <Toolbar />
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/library" element={<YourLibrary />} />
+                <Route path="/" element={<Search />} />
                 <Route path="/liked" element={<LikedSongs />} />
-                <Route path="*" element={<Home />} />
+                <Route path="*" element={<Search />} />
               </Routes>
               <Box>
                 <WebPlayback />

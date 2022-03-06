@@ -37,21 +37,9 @@ const SideBarNavigation = ({ selectTrack }) => {
       <List sx={{ flexShrink: "0" }}>
         <ListItemButton component={NavLink} to="/">
           <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Home"} />
-        </ListItemButton>
-        <ListItemButton component={NavLink} to="/search">
-          <ListItemIcon>
             <SearchIcon />
           </ListItemIcon>
           <ListItemText primary={"Search"} />
-        </ListItemButton>
-        <ListItemButton component={NavLink} to="library">
-          <ListItemIcon>
-            <LibraryMusicIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Your Library"} />
         </ListItemButton>
         <ListItemButton component={NavLink} to="/liked">
           <ListItemIcon>
