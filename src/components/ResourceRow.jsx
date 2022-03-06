@@ -90,10 +90,19 @@ const ResourceRow = forwardRef(
           )}
         </TableCell>
 
-        {columns.map((column) => {
+        {columns.map((column, index) => {
           const value = row[column.id];
           return (
-            <TableCell key={column.id} align={column.align}>
+            <TableCell
+              key={column.id}
+              align={column.align}
+              sx={{
+                display: {
+                  xs: index > 0 ? "none" : "table-cell",
+                  sm: "table-cell",
+                },
+              }}
+            >
               {column.id === "title" ? (
                 <div style={{ display: "flex" }}>
                   <ImageListItem sx={{ width: "50px", height: "50px", mr: 1 }}>

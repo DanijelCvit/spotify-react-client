@@ -22,12 +22,11 @@ const StyledTableCell = styled(TableCell)({
 });
 
 const columns = [
-  { id: "title", label: "Title", minWidth: 170 },
-  { id: "album", label: "Album", minWidth: 100 },
+  { id: "title", label: "Title" },
+  { id: "album", label: "Album" },
   {
     id: "duration",
     label: "Duration",
-    minWidth: 170,
     align: "right",
   },
 ];
@@ -88,13 +87,19 @@ const ResourceTable = ({
         <Table stickyHeader aria-label="sticky table">
           <TableHead sx={{ position: "relative" }}>
             <TableRow sx={{ border: 0 }}>
-              <StyledTableCell style={{ minWidth: "100px" }}>#</StyledTableCell>
-              {columns.map((column) => (
+              <StyledTableCell style={{ textAlign: "center" }}>
+                #
+              </StyledTableCell>
+              {columns.map((column, index) => (
                 <StyledTableCell
                   key={column.id}
                   align={column.align}
                   sx={{
                     minWidth: column.minWidth,
+                    display: {
+                      xs: index > 0 ? "none" : "table-cell",
+                      sm: "table-cell",
+                    },
                   }}
                 >
                   {column.label}

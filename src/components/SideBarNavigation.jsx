@@ -4,8 +4,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import SearchIcon from "@mui/icons-material/Search";
-import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
-import HomeIcon from "@mui/icons-material/Home";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { ListItemButton } from "@mui/material";
 import { NavLink } from "react-router-dom";
@@ -31,7 +29,13 @@ const SideBarNavigation = ({ selectTrack }) => {
   });
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+      }}
+    >
       <Toolbar sx={{ flexShrink: "0" }} />
       <Divider sx={{ flexShrink: "0" }} />
       <List sx={{ flexShrink: "0" }}>
