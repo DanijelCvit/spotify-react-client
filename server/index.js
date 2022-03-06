@@ -31,10 +31,15 @@ app.get("/auth/login", (req, res) => {
 
   const scope =
     "streaming \
+    playlist-read-private \
+    playlist-read-collaborative \
      user-read-email \
+     user-top-read \
       user-read-private \
+      user-read-recently-played \
       user-library-read \
        user-library-modify \
+       user-read-currently-playing \
         user-read-playback-state \
          user-modify-playback-state";
 

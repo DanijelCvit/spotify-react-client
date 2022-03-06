@@ -15,14 +15,23 @@ import { AuthContext } from "../context/authContext.js";
 import TrackListItem from "./TrackListItem";
 import { LinearProgress } from "@mui/material";
 import Box from "@mui/material/Box";
+import { v4 as uuidv4 } from "uuid";
 
 const SideBarNavigation = ({ selectTrack }) => {
   const token = useContext(AuthContext);
-  const {
-    data: savedTracks,
-    isLoading,
-    errorMessage,
-  } = useFetch("items", "/me/tracks?limit=10", token);
+  const { data, isLoading, errorMessage } = useFetch(
+    "items",
+    "/me/player/recently-played",
+    token
+  );
+
+  const uniqueIds = [...new Set(data.map(({ track }) => track.id))];
+
+  const savedTracks = uniqueIds.map((id) => {
+    return data.find((item) => item.track.id === id).track;
+  });
+
+  console.log(savedTracks);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
@@ -57,9 +66,9 @@ const SideBarNavigation = ({ selectTrack }) => {
       <Divider />
       <List sx={{ height: "100%", overflowY: "auto" }}>
         {savedTracks.length > 0 &&
-          savedTracks.map(({ track }) => (
+          savedTracks.map((track) => (
             <TrackListItem
-              key={track.id}
+              key={uuidv4()}
               track={track}
               selectTrack={selectTrack}
               noImage={true}
