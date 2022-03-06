@@ -32,7 +32,14 @@ const columns = [
   },
 ];
 
-const ResourceTable = ({ rows, setPage, isLoading, hasMore }) => {
+const ResourceTable = ({
+  rows,
+  setPage,
+  isLoading,
+  hasMore,
+  favButton,
+  favAction,
+}) => {
   const { selectTrack } = useContext(DashboardContext);
   // Setting up a observer for last row to trigger infinite scroll
   const observer = useRef();
@@ -50,7 +57,6 @@ const ResourceTable = ({ rows, setPage, isLoading, hasMore }) => {
       observer.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && hasMore) {
-            console.log("triggered observer");
             setPage((prevPage) => prevPage + 1);
           }
         },
@@ -106,6 +112,8 @@ const ResourceTable = ({ rows, setPage, isLoading, hasMore }) => {
                       index={index}
                       ref={targetListItem}
                       selectTrack={selectTrack}
+                      favButton={favButton}
+                      favAction={favAction}
                     />
                   );
                 } else {
@@ -116,6 +124,8 @@ const ResourceTable = ({ rows, setPage, isLoading, hasMore }) => {
                       index={index}
                       key={row.id}
                       selectTrack={selectTrack}
+                      favButton={favButton}
+                      favAction={favAction}
                     />
                   );
                 }

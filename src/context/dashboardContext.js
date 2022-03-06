@@ -49,6 +49,26 @@ const DashboardProvider = ({ children }) => {
     }
   };
 
+  const handleFavorite = async (method, row) => {
+    try {
+      const res = await fetch(`${BASE_API_URL}/me/tracks`, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ids: [row.uri.split(":")[2]],
+        }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <DashboardContext.Provider
       value={{
@@ -63,6 +83,7 @@ const DashboardProvider = ({ children }) => {
         setCurrentTrack,
         player,
         setPlayer,
+        handleFavorite,
       }}
     >
       {children}

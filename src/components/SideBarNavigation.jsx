@@ -31,8 +31,6 @@ const SideBarNavigation = ({ selectTrack }) => {
     return data.find((item) => item.track.id === id).track;
   });
 
-  console.log(savedTracks);
-
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <Toolbar sx={{ flexShrink: "0" }} />

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LinearProgress } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
 import ResourceTable from "../components/ResourceTable";
@@ -6,10 +6,13 @@ import { formatDuration } from "../utils/utils.js";
 import { DashboardContext } from "../context/dashboardContext.js";
 import useFetch from "../hooks/useFetch.js";
 import { AuthContext } from "../context/authContext.js";
+import FavoriteButton from "../components/FavoriteButton";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const Search = () => {
   const token = useContext(AuthContext);
-  const { search, searchPage, setSearchPage } = useContext(DashboardContext);
+  const { search, searchPage, setSearchPage, handleFavorite } =
+    useContext(DashboardContext);
 
   const { data, errorMessage, isLoading, hasMore } = useFetch(
     "tracks",
@@ -31,6 +34,10 @@ const Search = () => {
     uri: track.uri,
   }));
 
+  const addFavorite = (track) => {
+    handleFavorite("PUT", track);
+  };
+
   return (
     <>
       <ResourceTable
@@ -38,6 +45,17 @@ const Search = () => {
         setPage={setSearchPage}
         isLoading={isLoading}
         hasMore={hasMore}
+        favButton={
+          <FavoriteButton>
+            <FavoriteBorderIcon
+              sx={{
+                width: "30px",
+                height: "30px",
+              }}
+            />
+          </FavoriteButton>
+        }
+        favAction={addFavorite}
       />
       {isLoading && <LinearProgress sx={{ mb: 1 }} color="inherit" />}
       {errorMessage}
