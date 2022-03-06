@@ -19,12 +19,16 @@ const DashboardProvider = ({ children }) => {
   });
 
   const token = useContext(AuthContext);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(() => {
+    return localStorage.getItem("search") || "";
+  });
   const [searchPage, setSearchPage] = useState(0);
 
   const handleSearch = (event) => {
-    setSearch(event.target.value.trim());
+    const query = event.target.value.trim();
+    setSearch(query);
     setSearchPage(0);
+    localStorage.setItem("search", query);
   };
 
   const selectTrack = async (track) => {

@@ -5,8 +5,6 @@ import AuthProvider from "./context/authContext";
 import Main from "./pages/Main";
 
 const App = () => {
-  const token = useAuth();
-
   return (
     <AuthProvider>
       <Main />
