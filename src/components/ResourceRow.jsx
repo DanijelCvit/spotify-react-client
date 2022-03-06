@@ -64,6 +64,7 @@ const ResourceRow = forwardRef(({ row, columns, index }, ref) => {
       hover
       role="checkbox"
       tabIndex={-1}
+      onDoubleClick={() => selectTrack(row)}
     >
       <TableCell>
         {!is_paused && current_track.uri === row.uri ? (
