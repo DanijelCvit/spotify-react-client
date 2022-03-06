@@ -9,18 +9,19 @@ import { DashboardContext } from "../context/dashboardContext.js";
 
 const ResourceRow = forwardRef(
   ({ row, columns, index, favButton, favAction }, ref) => {
-    const [selected, setSelected] = useState(false);
+    const [onHover, setOnHover] = useState(false);
 
     const { player, selectTrack, is_paused, current_track } =
       useContext(DashboardContext);
 
     const isPlaying = !is_paused && current_track.uri === row.uri;
+
     const handleOnMouseOver = () => {
-      setSelected(true);
+      setOnHover(true);
     };
 
     const handleOnMouseOut = () => {
-      setSelected(false);
+      setOnHover(false);
     };
 
     const handleSelectTrack = () => {
@@ -80,10 +81,10 @@ const ResourceRow = forwardRef(
                 sx={{
                   width: "30px",
                   height: "30px",
-                  display: selected ? "block" : "none",
+                  display: onHover ? "block" : "none",
                 }}
               />
-              <div style={{ display: selected ? "none" : "block" }}>
+              <div style={{ display: onHover ? "none" : "block" }}>
                 {index + 1}
               </div>
             </Button>
@@ -134,7 +135,7 @@ const ResourceRow = forwardRef(
                       <div
                         onClick={() => favAction(row)}
                         style={{
-                          visibility: selected ? "visible" : "hidden",
+                          visibility: onHover ? "visible" : "hidden",
                         }}
                       >
                         {favButton}
