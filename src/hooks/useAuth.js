@@ -42,7 +42,6 @@ const useAuth = () => {
     if (!refreshToken) {
       return;
     }
-    console.log("setting timer");
     const timer = setInterval(() => {
       const refreshCurrentToken = async () => {
         const response = await fetch("/auth/refresh_token", {
