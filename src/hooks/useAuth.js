@@ -8,10 +8,10 @@ const useAuth = () => {
   useEffect(() => {
     const auth = JSON.parse(localStorage.getItem("auth"));
     if (auth) {
-      const hasExpired = auth.expirationDate * 1000 - Date.now() <= 0;
+      const hasExpired = auth.expirationDate - Date.now() <= 0;
       if (auth.token && !hasExpired) {
         setToken(auth.token);
-        setExpiresIn(auth.expirationDate * 1000 - Date.now());
+        setExpiresIn(auth.expirationDate - Date.now());
         setRefreshToken(auth.refreshToken);
         return;
       }
